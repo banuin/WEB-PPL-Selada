@@ -16,16 +16,12 @@
 
 <body class="bg-[#FAFAFA] font-sans antialiased text-gray-800">
 
-<nav class="w-full bg-white shadow-sm sticky top-0 z-50">
+    <nav class="w-full bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             
             <div class="hidden md:flex flex-1 justify-start gap-8">
                 <a href="#" class="nav-link">Artikel</a>
                 <a href="#" class="nav-link">Katalog</a>
-            </div>
-
-            <div class="flex-shrink-0 flex justify-center">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo SELADAKU" class="h-8 md:h-10 w-auto object-contain">
             </div>
 
             <div class="hidden md:flex flex-1 justify-end items-center gap-6">
@@ -50,6 +46,7 @@
             <a href="{{ route('login') }}" class="block text-sm font-bold text-green-700">Masuk</a>
         </div>
     </nav>
+
     <div class="hero-wrapper">
         <div class="hero-container">
             <div class="hero-bg">
@@ -68,15 +65,25 @@
             <h2 class="section-title">Artikel</h2>
             <div class="section-line"></div>
         </div>
+        
         <div class="grid-container">
-            @for ($i = 0; $i < 6; $i++)
-            <div class="card">
-                <img src="{{ asset('images/menanam-selada.jpg') }}" alt="Petani" class="card-img">
-                <h3 class="text-sm font-bold text-center text-black mb-4 px-2">Kenapa Selada Bisa Berwarna Putih? Ini Penjelasannya!</h3>
-                <a href="#" class="btn-primary mt-auto">Selengkapnya</a>
+            @forelse ($artikels as $artikel)
+            <div class="card flex flex-col h-full">
+                <img src="{{ asset('images/artikel/' . $artikel->gambar) }}" alt="{{ $artikel->judul }}" class="card-img object-cover h-48 w-full">
+                
+                <h3 class="text-sm font-bold text-center text-black mb-4 px-2 mt-4">
+                    {{ $artikel->judul }}
+                </h3>
+                
+                <a href="{{ route('artikel.show', $artikel->id) }}" class="btn-primary mt-auto">Selengkapnya</a>
             </div>
-            @endfor
+            @empty
+            <div class="col-span-full text-center text-gray-500 py-10 font-medium">
+                Belum ada artikel yang dipublikasikan.
+            </div>
+            @endforelse
         </div>
+
         <div class="text-center mt-10">
             <a href="#" class="btn-outline">Lihat Lebih Banyak Lagi</a>
         </div>
