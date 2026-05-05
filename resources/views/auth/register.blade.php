@@ -26,7 +26,7 @@
 
                 <script>
                     setTimeout(function() {
-                        window.location.href = "{{ route('welcome') }}";
+                        window.location.href = "{{ route('login') }}";
                     }, 500);
                 </script>
             @endif

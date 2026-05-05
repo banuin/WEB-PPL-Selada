@@ -50,23 +50,51 @@
         <div class="text-center mt-10">
             <a href="#" class="btn-outline">Lihat Lebih Banyak Lagi</a>
         </div>
-    </div>
+    </div>  
 
-    <div class="section-wrapper">
+       <!-- ================= BAGIAN KATALOG ================= -->
+    <div class="section-wrapper !mb-24">
+        
+        <!-- Header Katalog (Biar sama dengan Artikel) -->
         <div class="section-header">
-            <h2 class="section-title">Katalog</h2>
+            <h2 class="section-title">Katalog Terbaru</h2>
             <div class="section-line"></div>
         </div>
-        <div class="grid-container">
-            @for ($i = 0; $i < 3; $i++)
-            <div class="card flex flex-col h-full">
-                <img src="{{ asset('images/aset-selada.jpg') }}" alt="Selada" class="card-img object-cover h-48 w-full">
-                <h3 class="text-sm font-bold text-black mb-2 mt-4">Selada Paket Reseler/Tengkulak (minim 10Kg)</h3>
-                <p class="text-[#2F6B38] font-extrabold text-sm mb-4">Rp.000.000</p>
-                <a href="#" class="btn-primary mt-auto">Pesan</a>
+
+        <!-- Grid Katalog -->
+        <!-- Tambahan max-w-5xl dan mx-auto biar sejajar persis dengan atasnya -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto w-full">
+            
+            @forelse ($katalogs as $item)
+            <a href="{{ route('katalog.show', $item->id) }}" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-md transition group text-left">
+                
+                <!-- Foto Katalog -->
+                <div class="w-full h-48 overflow-hidden rounded-xl mb-5">
+                    <img src="{{ asset('storage/' . $item->foto[0]) }}" 
+                        alt="{{ $item->judul }}" 
+                        class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                </div>
+
+                <!-- Info Katalog -->
+                <h3 class="text-[15px] font-bold text-gray-800 leading-snug mb-2 pr-4">
+                    {{ $item->judul }}<br>
+                    <span class="text-xs text-gray-500 font-medium">(minim {{ $item->berat }}Kg)</span>
+                </h3>
+
+                <!-- Harga -->
+                <p class="text-[#2F8540] font-bold text-[15px] mt-auto">
+                    Rp{{ number_format($item->harga, 0, ',', '.') }}
+                </p>
+            </a>
+            
+            @empty
+            <div class="col-span-full py-10 text-center">
+                <p class="text-gray-400 italic">Katalog belum tersedia.</p>
             </div>
-            @endfor
+            @endforelse
+
         </div>
+
     </div>
 
 @endsection

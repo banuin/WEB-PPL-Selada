@@ -17,13 +17,21 @@
             <img src="{{ asset('images/aset-selada.jpg') }}" alt="Selada"
                 class="w-full h-full object-cover md:rounded-2xl">
         </div>
+        
         <div class="w-full md:w-1/2 flex flex-col justify-center px-8 sm:px-12 md:px-14 py-10 md:py-16">
+            
+            <!-- MODAL POP-UP SUCCESS (DIPERBESAR) -->
             @if(session('success'))
                 <div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"></div>
 
                 <div class="fixed inset-0 flex items-center justify-center z-50">
-                    <div class="bg-green-500 text-white px-8 py-4 rounded-xl shadow-lg font-semibold">
-                        {{ session('success') }}
+                    <!-- Penambahan px-12 py-8, text-xl, min-w-[300px], dan animasi scale -->
+                    <div class="bg-[#2F8540] text-white px-12 py-8 rounded-2xl shadow-2xl font-bold text-center min-w-[320px] flex flex-col items-center justify-center transform transition-all duration-300 scale-100">
+                        <!-- Icon Centang -->
+                        <svg class="w-12 h-12 mb-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        <span class="text-xl sm:text-2xl tracking-wide">{{ session('success') }}</span>
                     </div>
                 </div>
 
@@ -34,10 +42,12 @@
                         @else
                             window.location.href = "{{ route('pelanggan.home') }}";
                         @endif
-                    }, 500);
+                    }, 800); // Waktu kutambah sedikit jadi 800ms biar user sempat baca dan lihat iconnya
                 </script>
             @endif
+
             <h2 class="text-3xl font-extrabold text-gray-700 mb-10">Seladaku</h2>
+            
             <form action="{{ route('login.proses') }}" method="POST" class="space-y-5">
                 @csrf
                 <div>
@@ -51,6 +61,7 @@
                     <input type="password" name="password"
                         class="w-full px-4 py-3 border border-gray-400 rounded-2xl focus:outline-none focus:border-[#337C3E] focus:ring-1 focus:ring-[#337C3E] text-sm">
                 </div>
+                
                 @if(session('error'))
                     <p class="text-red-500 text-sm mt-1">
                         {{ session('error') }}
@@ -64,16 +75,16 @@
             </form>
 
             <div class="text-center mt-4 mb-5">
-                <a href="#" class="text-sm text-gray-500 hover:text-green-700">Reset Password?</a>
+                <!-- Link Reset Password sudah diarahkan ke route yang tadi kita buat -->
+                <a href="{{ route('password.request') }}" class="text-sm text-gray-500 hover:text-green-700 font-medium transition">Reset Password?</a>
             </div>
 
             <a href="{{ route('register') }}"
                 class="block text-center w-full py-3 border border-gray-500 text-gray-700 font-semibold rounded-2xl hover:bg-gray-50 transition text-sm">
-                Create new account
+                Daftar
             </a>
 
         </div>
     </div>
-
 </body>
 </html>

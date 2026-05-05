@@ -18,7 +18,7 @@ return new class extends Migration
             $table->json('foto');// Path foto disimpan sebagai string
             $table->integer('berat'); // Integer
             $table->integer('stok')->nullable(); // Sesuai desain UI Anda
-            $table->integer('harga'); // Integer
+            $table->bigInteger('harga'); // Integer
             $table->timestamps();
         });
     }

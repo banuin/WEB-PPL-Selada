@@ -6,6 +6,7 @@ use App\Http\Controllers\KatalogController;
 use App\Http\Controllers\ArtikelController; 
 use App\Http\Controllers\AdminController;
 use App\Models\Artikel; 
+use App\Http\Controllers\Auth\ForgotPasswordController;
 
 // 1. Rute Publik
 Route::get('/', function () { 
@@ -13,6 +14,11 @@ Route::get('/', function () {
 });
 Route::get('/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
 
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendOtp'])->name('password.email');
+
+Route::get('/reset-password', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset.form');
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->name('password.update');
 // 2. Rute Guest (Hanya untuk yang belum login)
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -27,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/profil/update', [AuthController::class, 'updateProfil'])->name('profil.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); 
     Route::get('/artikel/{id}', [ArtikelController::class, 'show'])->name('artikel.show');
+    Route::get('/katalog-detail/{id}', [KatalogController::class, 'showPelanggan'])->name('katalog.show');
 
     // GRUP ADMIN
     Route::prefix('admin')->name('admin.')->group(function () {
@@ -50,6 +57,23 @@ Route::middleware('auth')->group(function () {
         Route::get('/katalog/create', [KatalogController::class, 'create'])->name('katalog.create');
         Route::post('/katalog', [KatalogController::class, 'store'])->name('katalog.store');
         Route::get('/katalog/{id}', [KatalogController::class, 'show'])->name('katalog.show');
+
+        Route::get('/katalog/edit/{id}', [KatalogController::class, 'edit'])->name('katalog.edit');
+        Route::put('/katalog/update/{id}', [KatalogController::class, 'update'])->name('katalog.update');
+        Route::delete('/katalog/hapus/{id}', [KatalogController::class, 'destroy'])->name('katalog.destroy');
+
+        // Kelola Pemesanan
+        Route::get('/pemesanan', function () {
+            return view('admin.pemesanan.index');
+        })->name('pemesanan.index');
+
+        Route::get('/pemesanan/detail', function () {
+            return view('admin.pemesanan.detail');
+        })->name('pemesanan.show');
+
+        Route::get('/pemesanan/riwayat', function () {
+            return view('admin.pemesanan.riwayat');
+        })->name('pemesanan.riwayat');
     });
 
     // GRUP PELANGGAN

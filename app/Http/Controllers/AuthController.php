@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash; 
+use App\Models\Katalog;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -79,7 +80,8 @@ class AuthController extends Controller
         return redirect()->route('login')->with('success', 'Berhasil logout!');
     }
 
-    public function showDashboard() {
+    public function showDashboard() 
+    {
         $user = Auth::user();
 
         // Cek jika user mencoba akses rute admin tapi rolenya bukan admin
@@ -87,12 +89,16 @@ class AuthController extends Controller
             return redirect()->route('pelanggan.home');
         }
 
+        // Ambil data katalog (misalnya 6 terbaru agar tampilan rapi)
+        $katalogs = \App\Models\Katalog::latest()->take(6)->get();
+
         if ($user->role == 'admin') {
-            return view('admin.dashboard');
+            // Kirim $katalogs ke dashboard admin
+            return view('admin.dashboard', compact('katalogs'));
         } elseif ($user->role == 'pelanggan') {
-            // Pastikan data artikel dikirim ke home pelanggan agar muncul kartu-kartunya
+            // Pastikan data artikel DAN katalog dikirim ke home pelanggan
             $articles = \App\Models\Artikel::latest()->get();
-            return view('pelanggan.home', compact('articles'));
+            return view('pelanggan.home', compact('articles', 'katalogs'));
         }
         
         return redirect()->route('login');
