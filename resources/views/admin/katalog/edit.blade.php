@@ -13,10 +13,8 @@
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
     </a>
 
-    <!-- x-data untuk kontrol modal simpan dan pilihan berat -->
-    <div x-data="{ showSaveModal: false, selectedBerat: {{ old('berat', $katalog->berat) }} }" class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <div x-data="{ showSaveModal: false }" class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
         
-        <!-- ================= KOLOM KIRI (FOTO) ================= -->
         <div class="flex flex-col gap-4">
             <div class="w-full aspect-square rounded-2xl overflow-hidden shadow-sm border border-gray-100">
                 <img id="mainImage" 
@@ -35,64 +33,52 @@
                 @endfor
             </div>
             
-            {{-- Opsional: Input file jika ingin ganti gambar --}}
-            {{-- <input type="file" name="foto[]" multiple form="formUpdate"> --}}
         </div>
 
-        <!-- ================= KOLOM KANAN (FORM UBAH) ================= -->
         <form id="formUpdate" action="{{ route('admin.katalog.update', $katalog->id) }}" method="POST" class="flex flex-col gap-4">
             @csrf
             @method('PUT')
 
-            <!-- Judul -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <input type="text" name="judul" value="{{ old('judul', $katalog->judul) }}" placeholder="Nama Produk" class="w-full text-2xl font-extrabold text-black leading-snug border-none focus:ring-0 p-0 placeholder-gray-300">
             </div>
 
-            <!-- Isi Detail -->
             <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col flex-grow">
                 
                 <div class="mb-8">
+                    <label class="block text-sm font-medium text-black mb-2">Deskripsi produk</label>
                     <textarea name="deskripsi" rows="5" placeholder="Deskripsi produk..." class="w-full text-sm font-medium text-black leading-relaxed border border-gray-200 rounded-lg p-3 focus:ring-[#2F8540] focus:border-[#2F8540] resize-none">{{ old('deskripsi', $katalog->deskripsi) }}</textarea>
                 </div>
 
-                <div class="mb-8">
-                    <label class="block text-sm font-bold text-black mb-3">Berat:</label>
-                    <!-- Input Hidden untuk Berat -->
-                    <input type="hidden" name="berat" :value="selectedBerat">
-                    
-                    <div class="flex gap-3">
-                        @foreach([10, 20, 30, 40, 50] as $b)
-                            <button type="button" @click="selectedBerat = {{ $b }}" 
-                                :class="selectedBerat == {{ $b }} ? 'bg-[#0E3E20]' : 'bg-gray-500'"
-                                class="px-5 py-2 rounded-full text-xs font-bold text-white transition">
-                                {{ $b }}KG
-                            </button>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-6 mb-8">
+                <div class="grid grid-cols-2 gap-6 mb-8 mt-auto">
                     <div>
-                        <label class="block text-sm font-bold text-black mb-2">Stock:</label>
-                        <input type="number" name="stok" value="{{ old('stok', $katalog->stok) }}" class="w-full px-4 py-3 border border-gray-400 rounded-lg text-sm text-center font-bold text-black focus:ring-[#2F8540] focus:border-[#2F8540]">
+                        <label class="block text-sm font-bold text-black mb-2">Total Stok (KG):</label>
+                        <input type="number" name="stok" value="{{ old('stok', $katalog->stok) }}" class="w-full px-4 py-3 border border-gray-400 rounded-lg text-sm text-center font-bold text-black focus:outline-none focus:ring-[#2F8540] focus:border-[#2F8540]">
                     </div>
                     <div>
-                        <label class="block text-sm font-bold text-black mb-2">Harga:</label>
+                        <label class="block text-sm font-bold text-black mb-2">Harga (per 1 KG):</label>
                         <div class="relative">
                             <span class="absolute left-4 top-3 text-sm font-bold text-[#2F8540]">Rp.</span>
-                            <input type="text" name="harga" value="{{ old('harga', $katalog->harga) }}" class="w-full pl-10 pr-4 py-3 border border-gray-400 rounded-lg text-sm font-bold text-[#2F8540] focus:ring-[#2F8540] focus:border-[#2F8540]">
+                            <input type="text" name="harga" value="{{ old('harga', $katalog->harga) }}" class="w-full pl-10 pr-4 py-3 border border-gray-400 rounded-lg text-sm font-bold text-[#2F8540] focus:outline-none focus:ring-[#2F8540] focus:border-[#2F8540]">
                         </div>
                     </div>
                 </div>
 
-                <!-- Pesan Error Validasi & Tombol Simpan -->
-                <div class="mt-auto text-right">
-                    @if(session('error_katalog') || $errors->any())
+                <div class="mt-4 flex flex-col items-end">
+                    @if($errors->any())
+                        <div class="w-full mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                            <p class="text-red-700 font-bold mb-2 text-sm">Validasi Gagal Karena:</p>
+                            <ul class="list-disc pl-5 text-red-600 text-xs font-medium space-y-1">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @elseif(session('error_katalog'))
                         <p class="text-[#CC1A1A] text-sm font-bold mb-3">Harap lengkapi data katalog</p>
                     @endif
                     
-                    <button type="button" @click="showSaveModal = true" class="bg-[#2F8540] hover:bg-[#246631] text-white px-10 py-2.5 rounded-lg font-bold shadow-md transition">
+                    <button type="button" @click="showSaveModal = true" class="bg-[#2F8540] hover:bg-[#246631] text-white px-10 py-3 rounded-lg font-bold shadow-md transition w-full md:w-auto">
                         Simpan
                     </button>
                 </div>
@@ -100,7 +86,6 @@
             </div>
         </form>
 
-        <!-- ================= MODAL KONFIRMASI SIMPAN ================= -->
         <div x-show="showSaveModal" 
              style="display: none;"
              class="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm"
@@ -125,7 +110,6 @@
                 </h3>
                 
                 <div class="flex justify-center gap-6">
-                    <!-- Submit Form via Alpine -->
                     <button @click="document.getElementById('formUpdate').submit()" class="bg-[#4CAF50] text-white font-bold py-2.5 px-10 rounded-xl shadow-[0_4px_10px_rgba(76,175,80,0.3)] hover:bg-[#388E3C] transition transform hover:-translate-y-0.5">
                         YAKIN
                     </button>
@@ -139,4 +123,4 @@
     </div>
 
 </body>
-</html> 
+</html>

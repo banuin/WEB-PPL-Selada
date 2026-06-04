@@ -14,7 +14,7 @@
     <div class="w-full max-w-5xl flex flex-col md:flex-row min-h-screen md:min-h-0 md:rounded-2xl overflow-hidden">
 
         <div class="w-full md:w-3/5 h-56 sm:h-72 md:h-auto md:min-h-[700px] flex-shrink-0">
-            <img src="{{ asset('images/aset-selada.jpg') }}" alt="Selada"
+            <img src="{{ asset('images/Selada Login.jpeg') }}" alt="Selada"
                 class="w-full h-full object-cover md:rounded-2xl">
         </div>
         

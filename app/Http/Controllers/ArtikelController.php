@@ -58,10 +58,10 @@ class ArtikelController extends Controller
         $request->validate([
             'judul' => 'required',
             'deskripsi' => 'required',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg|max:2048'
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg',
         ], [
             'deskripsi.required' => 'harap lengkapi data artikel',
-            'judul.required' => 'judul tidak boleh kosong'
+            'judul.required' => 'judul tidak boleh kosong',
         ]);
 
         $data = [

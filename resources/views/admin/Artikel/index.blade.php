@@ -1,14 +1,7 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Kelola Artikel - SELADAKU</title>
-    <style>[x-cloak] { display: none !important; }</style>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
-<body class="bg-white min-h-screen font-sans">
+@extends('layouts.app')
+
+@section('content')
+    {{-- Pop-up Success --}}
     @if(session()->has('success'))
         <div x-data="{ showPopup: true }" 
              x-show="showPopup" x-cloak
@@ -60,7 +53,6 @@
                 
                 {{-- Gambar Thumbnail --}}
                 <div class="w-full h-48 rounded-xl overflow-hidden mb-5 bg-gray-100">
-                    {{-- Memanggil gambar dari folder public/images/articles --}}
                     @if($item->gambar)
                         <img src="{{ asset('images/articles/' . $item->gambar) }}" alt="{{ $item->judul }}" class="w-full h-full object-cover">
                     @else
@@ -92,6 +84,4 @@
 
         </div>
     </div>
-
-</body>
-</html>
+@endsection

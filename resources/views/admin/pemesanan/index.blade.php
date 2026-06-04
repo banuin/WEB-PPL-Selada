@@ -44,26 +44,40 @@
                             <th class="py-4 px-6 font-semibold text-gray-800 rounded-r-xl"></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {{-- Data dummy untuk memperlihatkan desain --}}
-                        @for ($i = 1; $i <= 2; $i++)
-                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
-                            <td class="py-5 px-6 text-gray-800 font-medium">0{{ $i }}</td>
-                            <td class="py-5 px-6 text-gray-800 font-medium">Bang Messi</td></td>
-                            <td class="py-5 px-6 text-gray-800 font-medium">087449320832</td>
-                            <td class="py-5 px-6">
-                                <!-- Badge Status -->
-                                <span class="inline-block px-5 py-1.5 border border-[#F59E0B] text-[#F59E0B] rounded-full text-[13px] font-semibold bg-orange-50/50">
-                                    Diproses
-                                </span>
+                    <tbody class="text-sm">
+                        @forelse($pemesanans as $index => $item)
+                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                            <td class="py-5 px-6 font-medium text-gray-700">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</td>
+                            <td class="py-5 px-6 text-gray-800">{{ $item->pelanggan->name }}</td>
+                            <td class="py-5 px-6 text-gray-800">{{ $item->pelanggan->nomor_telpon }}</td>
+                            <td class="py-5 px-6 text-center">
+                                @php
+                                    $statusClass = 'bg-gray-100 text-gray-700 border-gray-300';
+                                    if(strtolower($item->status_pembayaran) == 'dikirim') {
+                                        $statusClass = 'bg-blue-100 text-blue-700 border-blue-300';
+                                    } elseif(strtolower($item->status_pembayaran) == 'diproses') {
+                                        $statusClass = 'bg-orange-100 text-orange-600 border-orange-300 bg-orange-50/50';
+                                    } elseif(strtolower($item->status_pembayaran) == 'menunggu konfirmasi' || strtolower($item->status_pembayaran) == 'menunggu verifikasi') {
+                                        $statusClass = 'bg-red-100 text-red-600 border-red-300';
+                                    }
+                                @endphp
+                                <div class="flex justify-center items-center w-full">
+                                    <span class="inline-block px-5 py-1.5 border rounded-full text-[13px] font-semibold {{ $statusClass }}">
+                                        {{ $item->status_pembayaran }}
+                                    </span>
+                                </div>
                             </td>
                             <td class="py-5 px-6 text-right">
-                                <a href="{{ route('admin.pemesanan.show') }}" class="inline-block bg-[#2F8540] text-white px-5 py-2.5 rounded-lg text-[13px] font-bold hover:bg-[#246631] transition shadow-sm">
-                                Lihat Detail Pemesanan
-                            </a>
+                                <a href="{{ route('admin.pemesanan.show', $item->id) }}" class="inline-block bg-[#2F8540] text-white px-5 py-2.5 rounded-lg text-[13px] font-bold hover:bg-[#246631] transition shadow-sm">
+                                    Lihat Detail Pemesanan
+                                </a>
                             </td>
                         </tr>
-                        @endfor
+                        @empty
+                        <tr>
+                            <td colspan="5" class="py-10 text-center text-gray-400 italic">Belum ada pemesanan aktif di SELADAKU.</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

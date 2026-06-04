@@ -11,7 +11,6 @@
 
     <div class="max-w-6xl mx-auto">
         
-        <!-- Header Halaman (Panah Kembali ke Daftar & Judul) -->
         <div class="flex items-center mb-8">
             <a href="{{ route('admin.pemesanan.index') }}" class="mr-4 text-black hover:text-gray-600 transition" title="Kembali ke Daftar Pemesanan">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -21,7 +20,6 @@
             <h1 class="text-2xl font-bold text-black tracking-wide">Pemesanan</h1>
         </div>
 
-        <!-- Container Card Putih -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
             
             <!-- Judul & Keterangan Halaman -->
@@ -31,8 +29,6 @@
                     <p class="text-sm text-gray-500 mt-1">Menampilkan semua pesanan yang telah selesai dikonfirmasi dan dikirim.</p>
                 </div>
             </div>
-
-            <!-- Tabel Riwayat (Semua Status Selesai) -->
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse min-w-max">
                     <thead>
@@ -44,27 +40,28 @@
                             <th class="py-4 px-6 font-semibold text-gray-800 rounded-r-xl"></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        {{-- Data dummy riwayat --}}
-                        @for ($i = 1; $i <= 5; $i++)
-                        <tr class="border-b border-gray-200 hover:bg-gray-50 transition">
-                            <td class="py-5 px-6 text-gray-800 font-medium">{{ $i }}</td>
-                            <td class="py-5 px-6 text-gray-800 font-medium">Pelanggan Riwayat {{ $i }}</td>
-                            <td class="py-5 px-6 text-gray-800 font-medium">0812345678{{ $i }}</td>
-                            <td class="py-5 px-6">
-                                <!-- Badge Status SELESAI (Hijau) -->
-                                <span class="inline-block px-5 py-1 border border-[#2F8540] text-[#2F8540] rounded-full text-[13px] font-semibold bg-green-50 text-align: center">
-                                    Selesai
+                    <tbody class="text-sm">
+                        @forelse($pemesanans as $index => $item)
+                        <tr class="border-b border-gray-100 hover:bg-gray-50 transition">
+                            <td class="py-5 px-6 font-medium text-gray-700">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</td>
+                            <td class="py-5 px-6 text-gray-800">{{ $item->pelanggan->name }}</td>
+                            <td class="py-5 px-6 text-gray-800">{{ $item->pelanggan->nomor_telpon }}</td>
+                            <td class="py-5 px-6 text-center">
+                                <span class="inline-block px-5 py-1.5 border border-green-300 text-green-700 bg-green-50 rounded-full text-[13px] font-semibold">
+                                    {{ $item->status_pembayaran }}
                                 </span>
                             </td>
                             <td class="py-5 px-6 text-right">
-                                <!-- Ke Detail Pemesanan yang sama (dummy) -->
-                                <a href="{{ route('admin.pemesanan.show') }}" class="inline-block bg-[#2F8540] text-white px-5 py-2.5 rounded-lg text-[13px] font-standard hover:bg-[#246631] transition shadow-sm">
+                                <a href="{{ route('admin.pemesanan.show', $item->id) }}" class="inline-block bg-[#2F8540] text-white px-5 py-2.5 rounded-lg text-[13px] font-bold hover:bg-[#246631] transition shadow-sm">
                                     Lihat Detail Pemesanan
                                 </a>
                             </td>
                         </tr>
-                        @endfor
+                        @empty
+                        <tr>
+                            <td colspan="5" class="py-10 text-center text-gray-400 italic">Belum ada riwayat pemesanan yang selesai.</td>
+                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

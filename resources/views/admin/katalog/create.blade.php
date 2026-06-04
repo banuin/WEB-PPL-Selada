@@ -18,9 +18,6 @@
             previews: [], 
             filesData: new DataTransfer(),
             
-            // Pertahankan pilihan berat jika ada error (Old Input)
-            beratTerpilih: '{{ old('berat', '') }}',
-            
             // Logika Format Harga Rupiah dengan perlindungan Old Input
             hargaTampil: '{{ old('harga') ? 'Rp. ' . number_format(old('harga'), 0, ',', '.') : '' }}',
             hargaAsli: '{{ old('harga', '') }}',
@@ -64,7 +61,6 @@
             @csrf
 
             <div class="flex flex-col gap-4">
-                
                 <div class="w-full aspect-square bg-[#C4C4C4] rounded-xl overflow-hidden relative flex items-center justify-center border border-gray-200">
                     <template x-if="previews.length > 0">
                         <img :src="previews[0]" class="w-full h-full object-cover">
@@ -118,50 +114,38 @@
                         <textarea name="deskripsi" rows="6" class="w-full border-none focus:ring-0 focus:outline-none resize-none text-sm font-medium leading-relaxed placeholder-gray-400" placeholder="Tuliskan deskripsi produk di sini...">{{ old('deskripsi') }}</textarea>
                     </div>
 
-                    <div class="mb-8">
-                        <label class="block text-sm font-bold text-black mb-3">Berat:</label>
-                        <div class="flex gap-3">
-                            <input type="hidden" name="berat" :value="beratTerpilih">
-                            
-                            @foreach([10, 20, 30, 40, 50] as $b)
-                                <button type="button" 
-                                        @click="beratTerpilih = '{{ $b }}'"
-                                        :class="beratTerpilih == '{{ $b }}' ? 'bg-[#0E3E20] text-white' : 'bg-gray-500 text-white hover:bg-gray-600'"
-                                        class="px-5 py-2 rounded-full text-xs font-bold transition">
-                                    {{ $b }}KG
-                                </button>
-                            @endforeach
-                        </div>
-                    </div>
-
                     <div class="grid grid-cols-2 gap-6 mb-8">
                         <div>
-                            <label class="block text-sm font-bold text-black mb-2">Stock:</label>
-                            <input type="number" name="stok" value="{{ old('stok') }}" placeholder="50" 
+                            <label class="block text-sm font-bold text-black mb-2">Total Stok (KG):</label>
+                            <input type="number" name="stok" value="{{ old('stok') }}" placeholder="Misal: 50" 
                                    class="w-full px-4 py-3 border border-gray-400 rounded-lg text-sm text-center font-bold focus:outline-none focus:border-[#2F8540]">
                         </div>
                         <div>
-                            <label class="block text-sm font-bold text-black mb-2">Harga:</label>
+                            <label class="block text-sm font-bold text-black mb-2">Harga (per 1 KG):</label>
                             <div class="relative">
                                 <input type="hidden" name="harga" :value="hargaAsli">
-                                <input type="text" x-model="hargaTampil" @input="formatRupiah" placeholder="Rp. 100.000" 
+                                <input type="text" x-model="hargaTampil" @input="formatRupiah" placeholder="Rp. 20.000" 
                                        class="w-full px-4 py-3 border border-gray-400 rounded-lg text-sm text-center font-bold text-[#2F8540] focus:outline-none focus:border-[#2F8540]">
                             </div>
                         </div>
                     </div>
 
-                    <div class="mt-auto flex flex-col items-end">
-                        @if(session('error_katalog') || $errors->any())
-                            <p class="text-red-600 text-sm font-bold mb-3 tracking-wide">
-                                Harap lengkapi data katalog
-                            </p>
+                    <div class="mt-auto flex flex-col items-end w-full">
+                        @if($errors->any())
+                            <div class="w-full mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                                <p class="text-red-700 font-bold mb-2 text-sm">Validasi Gagal Karena:</p>
+                                <ul class="list-disc pl-5 text-red-600 text-xs font-medium space-y-1">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
                         @endif
 
-                        <button type="submit" class="bg-[#2F8540] hover:bg-[#246631] text-white font-bold py-3 px-10 rounded-lg transition shadow-sm w-full md:w-auto">
-                            Unggah
+                        <button type="submit" class="bg-[#2F8540] hover:bg-[#246631] text-white font-bold py-3 px-10 rounded-lg transition shadow-sm w-full md:w-auto mt-2">
+                            Simpan
                         </button>
                     </div>
-
                 </div>
             </div>
         </form>

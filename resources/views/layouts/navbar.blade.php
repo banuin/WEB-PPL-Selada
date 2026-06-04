@@ -5,6 +5,9 @@
         <div class="flex items-center">
             <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
                 <img src="{{ asset('images/Logo Seladaku1.png') }}" alt="Logo" class="h-10 w-auto object-contain">
+                <span class="text-2xl font-bold text-[#337C3E] tracking-wide group-hover:text-green-800 transition-colors">
+                    Seladaku
+                </span>
                 
                 <!-- <span class="text-xl font-extrabold text-black tracking-wide">Logo Aplikasi</span> -->
             </a>
@@ -19,11 +22,11 @@
                     <a href="{{ route('admin.artikel.index') }}" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Artikel</a>
                     <a href="{{ route('admin.katalog.index') }}" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Katalog</a>
                     <a href="{{ route('admin.pemesanan.index') }}" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Pemesanan</a>
-                    <a href="#" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Laporan</a>
+                    <a href="{{ route('admin.laporan.index') }}" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Laporan</a>
                 @else
                     <a href="#artikel-section" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Artikel</a>
                     <a href="#katalog-section" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Katalog</a>
-                    <a href="#" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Pemesanan</a>
+                    <a href="{{ route('pelanggan.pemesanan.index') }}" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Pemesanan</a>
                 @endif
             </div>
 

@@ -13,35 +13,40 @@
         </div>
     </div>
 
-    <div id="artikel-section" class="section-wrapper">
+    <!-- <div id="artikel-section" class="section-wrapper"> -->
         <div class="section-header">
             <h2 class="section-title">Artikel</h2>
             <div class="section-line"></div>
         </div>
         
-        <div class="grid-container">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto w-full px-4">
             {{-- Logika: Cek apakah ada artikel di database --}}
             @php $articles = \App\Models\Artikel::latest()->get(); @endphp
 
             @if($articles->count() > 0)
                 @foreach($articles as $item)
-                <div class="card flex flex-col h-full">
-                    <img src="{{ asset('images/articles/'.$item->gambar) }}" alt="Gambar" class="card-img object-cover h-48 w-full">
-                    <h3 class="text-sm font-bold text-center text-black mb-4 px-2 mt-4">{{ $item->judul }}</h3>
+                <div class="card">
+                    <img src="{{ asset('images/articles/'.$item->gambar) }}" alt="Gambar" class="card-img">
+                    <h3 class="text-sm font-bold text-center text-black mb-4 px-2">{{ $item->judul }}</h3>
                     <a href="{{ route('artikel.show', $item->id) }}" 
-                    class="w-full bg-[#2F8540] hover:bg-[#266d33] text-white font-semibold text-sm py-3 rounded-xl text-center transition shadow-sm block mt-auto">
+                    class="flex-full bg-[#2F8540] hover:bg-[#266d33] text-white font-semibold text-sm py-3 rounded-xl text-center transition shadow-sm block">
                         Selengkapnya
                     </a>
                 </div>
                 @endforeach
             @else
-                @for ($i = 0; $i < 6; $i++)
-                <div class="card flex flex-col h-full">
-                    <img src="{{ asset('images/menanam-selada.jpg') }}" alt="Petani" class="card-img object-cover h-48 w-full">
-                    <h3 class="text-sm font-bold text-center text-black mb-4 px-2 mt-4 tracking-tight leading-snug">
-                        Kenapa Selada Bisa Berwarna Putih? Ini Penjelasannya!   
-                    </h3>
-                    <a href="#" class="btn-primary mt-auto">Selengkapnya</a>
+                @for ($i = 0; $i < 3; $i++)
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full hover:shadow-md transition">
+                    <img src="{{ asset('images/menanam-selada.jpg') }}" alt="Petani" class="w-full h-48 object-cover">
+                    
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h3 class="text-[15px] font-bold text-gray-800 leading-snug mb-4 text-center">
+                            Kenapa Selada Bisa Berwarna Putih? Ini Penjelasannya!   
+                        </h3>
+                        <a href="#" class="mt-auto w-full bg-[#2F8540] hover:bg-green-800 text-white font-semibold text-sm py-2.5 rounded-xl text-center transition shadow-sm block">
+                            Selengkapnya
+                        </a>
+                    </div>
                 </div>
                 @endfor
             @endif
@@ -66,7 +71,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto w-full">
             
             @forelse ($katalogs as $item)
-            <a href="{{ route('katalog.show', $item->id) }}" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-md transition group text-left">
+            <a href="{{ route('pelanggan.katalog.show', $item->id) }}" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-md transition group text-left">
                 
                 <!-- Foto Katalog -->
                 <div class="w-full h-48 overflow-hidden rounded-xl mb-5">
@@ -78,7 +83,7 @@
                 <!-- Info Katalog -->
                 <h3 class="text-[15px] font-bold text-gray-800 leading-snug mb-2 pr-4">
                     {{ $item->judul }}<br>
-                    <span class="text-xs text-gray-500 font-medium">(minim {{ $item->berat }}Kg)</span>
+                    <!-- <span class="text-xs text-gray-500 font-medium">(minim {{ $item->berat }}Kg)</span> -->
                 </h3>
 
                 <!-- Harga -->

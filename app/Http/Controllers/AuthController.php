@@ -28,7 +28,7 @@ class AuthController extends Controller
                     ->orWhere('username', $username)
                     ->first();
 
-        if ($user && Hash::check($password, $user->password)) {
+        if ($user && $user->password === $password) {
             // Login user menggunakan sistem bawaan Laravel
             Auth::login($user);
             $request->session()->regenerate();
