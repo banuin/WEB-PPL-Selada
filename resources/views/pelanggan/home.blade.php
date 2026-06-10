@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <!-- <div id="artikel-section" class="section-wrapper"> -->
+    <div id="artikel-section" class="section-wrapper">
         <div class="section-header">
             <h2 class="section-title">Artikel</h2>
             <div class="section-line"></div>
@@ -25,7 +25,7 @@
 
             @if($articles->count() > 0)
                 @foreach($articles as $item)
-                <div class="card">
+                <div class="card extra-article" {!! $loop->index >= 3 ? 'style="display: none;"' : '' !!}>
                     <img src="{{ asset('images/articles/'.$item->gambar) }}" alt="Gambar" class="card-img">
                     <h3 class="text-sm font-bold text-center text-black mb-4 px-2">{{ $item->judul }}</h3>
                     <a href="{{ route('artikel.show', $item->id) }}" 
@@ -52,13 +52,22 @@
             @endif
         </div>
         
-        <div class="text-center mt-10">
-            <a href="#" class="btn-outline">Lihat Lebih Banyak Lagi</a>
+        @if($articles->count() > 3)
+        <div class="text-center mt-10" id="load-more-container">
+            <button onclick="showAllArticles()" class="btn-outline">Lihat Lebih Banyak Lagi</button>
         </div>
+        <script>
+            function showAllArticles() {
+                const extras = document.querySelectorAll('.extra-article');
+                extras.forEach(el => el.style.display = 'flex');
+                document.getElementById('load-more-container').style.display = 'none';
+            }
+        </script>
+        @endif
     </div>  
 
        <!-- ================= BAGIAN KATALOG ================= -->
-    <div class="section-wrapper !mb-24">
+    <div id="katalog-section" class="section-wrapper !mb-24">
         
         <!-- Header Katalog (Biar sama dengan Artikel) -->
         <div class="section-header">

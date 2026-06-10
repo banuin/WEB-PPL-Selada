@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ubah Katalog - Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-[#FAFAFA] font-sans antialiased text-gray-800 p-8 md:p-12 relative">
+@extends('layouts.app')
+
+@section('content')
+<div class="p-8 md:p-12 relative">
 
     <a href="{{ route('admin.katalog.show', $katalog->id) }}" class="inline-flex items-center text-gray-600 hover:text-black mb-8 transition">
         <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
@@ -122,5 +116,5 @@
 
     </div>
 
-</body>
-</html>
+</div>
+@endsection

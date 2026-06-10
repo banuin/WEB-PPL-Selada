@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Checkout - SELADAKU</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+@extends('layouts.app')
+
+@push('styles')
     <style>
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
         input[type=number] { -moz-appearance: textfield; }
     </style>
-</head>
-<body class="bg-[#FAFAFA] font-['Poppins'] antialiased text-gray-800">
+@endpush
+
+@section('content')
 
     @php
         // 1. Tangkap berat dari URL (jika kosong, default ke 10KG)
@@ -179,6 +174,7 @@
         </form>
     </div>
 
+    @push('scripts')
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         const HARGA_PAKET = {{ $hargaPaket }};
@@ -220,6 +216,5 @@
         qtyInput.addEventListener('blur',  refreshTotal);
     });
     </script>
-
-</body>
-</html>
+    @endpush
+@endsection

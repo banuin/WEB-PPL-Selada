@@ -19,7 +19,7 @@ Route::get('/', function () {
 
     // Kirim data asli ke file welcome.blade.php
     return view('welcome', compact('artikels', 'katalogs')); 
-});
+})->name('landing');
 
 // 2. Rute Guest (Hanya untuk yang belum login)
 Route::middleware('guest')->group(function () {
@@ -85,10 +85,9 @@ Route::middleware('auth')->group(function () {
     Route::prefix('pelanggan')->name('pelanggan.')->group(function () {
         Route::get('/home', [AuthController::class, 'showDashboard'])->name('home');
         
-        // 👇 DUA BARIS INI YANG HARUS DITAMBAHKAN 👇
+        // DUA BARIS INI YANG HARUS DITAMBAHKAN
         Route::get('/artikel', [ArtikelController::class, 'indexPelanggan'])->name('artikel.index');
         Route::get('/katalog', [KatalogController::class, 'indexPelanggan'])->name('katalog.index');
-        // 👆 =================================== 👆
 
         // Rute fitur pemesanan dipindah ke sini dengan rapi
         Route::get('/katalog/{id}', [KatalogController::class, 'showPelanggan'])->name('katalog.show');

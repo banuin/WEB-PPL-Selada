@@ -1,12 +1,7 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Profil Saya - SELADAKU</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-[#F3F4F6] min-h-screen font-sans">
+@extends('layouts.app')
+
+@section('content')
+<div class="bg-[#F3F4F6] min-h-screen font-sans pb-10">
 
     {{-- Tombol Back di luar card --}}
     <div class="px-8 pt-6">
@@ -92,5 +87,5 @@
             </form>
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection

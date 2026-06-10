@@ -1,13 +1,7 @@
-</html><!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Daftar Pemesanan - Admin</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body class="bg-[#FAFAFA] font-sans antialiased text-gray-800 p-8 md:p-12 min-h-screen">
+@extends('layouts.app')
+
+@section('content')
+<div class="p-8 md:p-12">
 
     <div class="max-w-6xl mx-auto">
         
@@ -85,5 +79,5 @@
         </div>
     </div>
 
-</body>
-</html>
+</div>
+@endsection

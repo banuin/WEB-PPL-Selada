@@ -1,14 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Detail Pelanggan - SELADAKU</title>
-    <style>[x-cloak] { display: none !important; }</style>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
-<body class="bg-[#F3F4F6] min-h-screen flex flex-col items-center p-6 font-sans">
+@extends('layouts.app')
+
+@push('styles')
+<style>[x-cloak] { display: none !important; }</style>
+@endpush
+
+@section('content')
+<div class="bg-[#F3F4F6] min-h-screen flex flex-col items-center p-6 font-sans">
 
     {{-- Tombol Back --}}
     <div class="w-full max-w-5xl mb-4">
@@ -104,5 +101,5 @@
 
         </div>
     </div>
-</body>
-</html>
+</div>
+@endsection

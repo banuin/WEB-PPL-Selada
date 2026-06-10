@@ -1,56 +1,8 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SELADAKU - Beranda</title>
+@extends('layouts.app')
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+@section('title', 'SELADAKU - Beranda')
 
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @endif
-</head>
-
-<body class="bg-[#FAFAFA] font-sans antialiased text-gray-800">
-
-    <nav class="w-full bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            
-            <div class="flex items-center gap-3">
-                <img src="{{ asset('images/logo.png') }}" alt="Logo Seladaku" class="h-8 w-auto">
-                <span class="font-extrabold text-xl text-[#2F8540] tracking-wide">Seladaku</span>
-            </div>
-
-            <div class="hidden md:flex flex-1 justify-center gap-8">
-                <a href="{{ route('login') }}" class="text-sm font-bold text-gray-700 hover:text-[#2F8540] transition">Artikel</a>
-                <a href="{{ route('login') }}" class="text-sm font-bold text-gray-700 hover:text-[#2F8540] transition">Katalog</a>
-            </div>
-
-            <div class="hidden md:flex items-center gap-6">
-                <a href="{{ route('register') }}" class="text-sm font-bold text-gray-700 hover:text-[#2F8540] transition">Daftar</a>
-                <a href="{{ route('login') }}" class="px-6 py-2.5 bg-[#2F8540] text-white rounded-lg hover:bg-green-800 transition shadow-sm font-bold text-sm">Masuk</a>
-            </div>
-
-            <div class="md:hidden flex items-center">
-                <button id="mobile-btn" class="text-gray-700 focus:outline-none">
-                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-6 py-4 space-y-4 shadow-md absolute w-full left-0">
-            <a href="{{ route('login') }}" class="block text-sm font-bold text-gray-700 hover:text-[#2F8540]">Artikel</a>
-            <a href="{{ route('login') }}" class="block text-sm font-bold text-gray-700 hover:text-[#2F8540]">Katalog</a>
-            <hr class="border-gray-200">
-            <a href="{{ route('register') }}" class="block text-sm font-bold text-gray-700 hover:text-[#2F8540]">Daftar</a>
-            <a href="{{ route('login') }}" class="block text-sm font-bold text-[#2F8540]">Masuk</a>
-        </div>
-    </nav>
+@section('content')
 
     <div class="hero-wrapper mt-4">
         <div class="hero-container">
@@ -63,7 +15,7 @@
         </div>
     </div>
 
-    <div class="mt-12">
+    <div class="mt-12" id="artikel-section">
         <div class="section-header">
             <h2 class="section-title">Artikel</h2>
             <div class="section-line"></div>
@@ -95,7 +47,7 @@
         </div>
     </div>  
 
-    <div class="section-wrapper !mb-24 mt-16">
+    <div class="section-wrapper !mb-24 mt-16" id="katalog-section">
         <div class="section-header">
             <h2 class="section-title">Katalog Terbaru</h2>
             <div class="section-line"></div>
@@ -129,31 +81,4 @@
         </div>
     </div>
 
-    <footer class="bg-gray-900 relative overflow-hidden py-12 mt-10">
-        <div class="absolute -top-16 -left-16 w-64 h-64 border-4 border-gray-800 rounded-full opacity-50"></div>
-        <div class="absolute -top-12 -left-12 w-56 h-56 border-4 border-gray-800 rounded-full opacity-50"></div>
-        
-        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
-            <h3 class="text-2xl font-extrabold text-white mb-2 tracking-wide">SELADAKU</h3>
-            <p class="text-gray-400 text-sm font-medium">Sayuran segar langsung dari kebun, untuk gaya hidup sehat Anda.</p>
-        </div>
-        
-        <div class="absolute bottom-6 right-6 grid grid-cols-5 gap-3 opacity-20">
-            @for ($i = 0; $i < 20; $i++)
-                <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
-            @endfor
-        </div>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const btn = document.getElementById('mobile-btn');
-            const menu = document.getElementById('mobile-menu');
-            
-            btn.addEventListener('click', function () {
-                menu.classList.toggle('hidden');
-            });
-        });
-    </script>
-</body>
-</html>
+@endsection

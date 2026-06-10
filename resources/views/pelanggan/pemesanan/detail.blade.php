@@ -1,14 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rincian Pemesanan - SELADAKU</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-</head>
-<body class="bg-[#FAFAFA] font-['Poppins'] antialiased text-gray-800">
+@extends('layouts.app')
+
+@section('content')
 
     <div x-data="{ showSuccess: {{ session('success_payment') ? 'true' : 'false' }} }" class="max-w-5xl mx-auto px-4 py-8">
 
@@ -123,5 +115,4 @@
         </div>
     </div>
 
-</body>
-</html>
+@endsection

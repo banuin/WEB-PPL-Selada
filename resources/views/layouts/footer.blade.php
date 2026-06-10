@@ -32,10 +32,27 @@
             {{-- Navigasi --}}
             <div class="md:col-span-2">
                 <h3 class="text-[#73BA3F] font-semibold mb-4 text-xs uppercase tracking-wider">Navigasi</h3>
+                @php
+                    $homeUrl = url('/');
+                    $artikelUrl = url('/#artikel-section');
+                    $katalogUrl = url('/#katalog-section');
+                    
+                    if (auth()->check()) {
+                        if (auth()->user()->role == 'admin') {
+                            $homeUrl = route('admin.dashboard');
+                            $artikelUrl = route('admin.artikel.index');
+                            $katalogUrl = route('admin.katalog.index');
+                        } else {
+                            $homeUrl = route('pelanggan.home');
+                            $artikelUrl = route('pelanggan.home') . '#artikel-section';
+                            $katalogUrl = route('pelanggan.home') . '#katalog-section';
+                        }
+                    }
+                @endphp
                 <ul class="space-y-2.5">
-                    <li><a href="#" class="hover:text-white transition text-white/70">Home</a></li>
-                    <li><a href="#artikel-section" class="hover:text-white transition text-white/70">Artikel</a></li>
-                    <li><a href="#" class="hover:text-white transition text-white/70">Katalog</a></li>
+                    <li><a href="{{ $homeUrl }}" class="hover:text-white transition text-white/70">Home</a></li>
+                    <li><a href="{{ $artikelUrl }}" class="hover:text-white transition text-white/70">Artikel</a></li>
+                    <li><a href="{{ $katalogUrl }}" class="hover:text-white transition text-white/70">Katalog</a></li>
                     <li><a href="#" class="hover:text-white transition text-white/70">Tentang Kami</a></li>
                     <li><a href="#" class="hover:text-white transition text-white/70">Kontak</a></li>
                 </ul>

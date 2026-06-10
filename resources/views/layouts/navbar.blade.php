@@ -3,7 +3,17 @@
         
         <!-- ================= 1. BAGIAN KIRI: LOGO ================= -->
         <div class="flex items-center">
-            <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3">
+            @php
+                $homeUrl = url('/');
+                if (auth()->check()) {
+                    if (auth()->user()->role == 'admin') {
+                        $homeUrl = route('admin.dashboard');
+                    } else {
+                        $homeUrl = route('pelanggan.home');
+                    }
+                }
+            @endphp
+            <a href="{{ $homeUrl }}" class="flex items-center gap-3">
                 <img src="{{ asset('images/Logo Seladaku1.png') }}" alt="Logo" class="h-10 w-auto object-contain">
                 <span class="text-2xl font-bold text-[#337C3E] tracking-wide group-hover:text-green-800 transition-colors">
                     Seladaku
@@ -24,8 +34,12 @@
                     <a href="{{ route('admin.pemesanan.index') }}" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Pemesanan</a>
                     <a href="{{ route('admin.laporan.index') }}" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Laporan</a>
                 @else
-                    <a href="#artikel-section" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Artikel</a>
-                    <a href="#katalog-section" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Katalog</a>
+                    @php
+                        $artikelUrl = auth()->check() ? route('pelanggan.home') . '#artikel-section' : url('/#artikel-section');
+                        $katalogUrl = auth()->check() ? route('pelanggan.home') . '#katalog-section' : url('/#katalog-section');
+                    @endphp
+                    <a href="{{ $artikelUrl }}" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Artikel</a>
+                    <a href="{{ $katalogUrl }}" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Katalog</a>
                     <a href="{{ route('pelanggan.pemesanan.index') }}" class="font-semibold text-[15px] text-gray-800 hover:text-[#2F8540] transition">Pemesanan</a>
                 @endif
             </div>

@@ -1,17 +1,6 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Katalog - Admin SELADAKU</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <style>
-        body { font-family: 'Poppins', sans-serif; }
-    </style>
-</head>
-<body class="bg-[#FAFAFA] antialiased text-gray-800">
+@extends('layouts.app')
+
+@section('content')
 
     <div class="max-w-7xl mx-auto px-6 py-10">
 
@@ -91,5 +80,4 @@
     </div>
     @endif
 
-</body>
-</html>
+@endsection
