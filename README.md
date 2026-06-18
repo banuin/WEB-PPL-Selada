@@ -1,58 +1,114 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Banu In Selada - Sistem Pemesanan Selada Hidroponik 🥬
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistem Informasi Pemesanan Selada Hidroponik berbasis Web yang dirancang khusus untuk mempermudah pelanggan dalam memesan selada segar dan membantu admin dalam mengelola katalog produk, konten edukasi (artikel), data pelanggan, serta pemrosesan transaksi pemesanan secara efisien.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### 🧑‍💼 Sisi Pelanggan (Customer)
+* **Katalog Produk Interaktif:** Menjelajahi berbagai pilihan selada hidroponik segar dengan detail harga, deskripsi, dan stok yang selalu *up-to-date*.
+* **Sistem Pemesanan & Kalkulasi Pintar:** Memesan selada dengan menentukan jumlah bungkus dan berat paket (per 100gr, 500gr, 1kg, dsb.) dengan perhitungan otomatis.
+* **Pembatalan Pesanan Instan:** Pelanggan dapat membatalkan pesanan langsung dari halaman detail pemesanan selama statusnya masih **Menunggu Verifikasi** atau **Menunggu Konfirmasi**.
+* **Keamanan Stok:** Stok selada yang dipesan akan otomatis dikembalikan ke katalog jika pelanggan membatalkan pesanan mereka sebelum diproses.
+* **Kelola Profil & Alamat:** Memperbarui data diri, kecamatan, serta detail alamat pengiriman untuk akurasi pengiriman.
+* **Artikel Edukatif:** Membaca artikel informasi dan tips seputar gaya hidup sehat dan pertanian hidroponik.
+* **Lupa Password via OTP:** Pemulihan akun menggunakan kode OTP (One-Time Password) yang aman.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### 👑 Sisi Admin (Administrator)
+* **Dashboard Ringkasan:** Memantau ringkasan statistik operasional toko selada.
+* **Kelola Katalog & Stok (CRUD):** Menambah, mengubah, menampilkan, dan menghapus produk selada.
+* **Kelola Artikel (CRUD):** Mempublikasikan tips kesehatan atau panduan hidroponik baru.
+* **Kelola Pelanggan:** Melihat data detail pelanggan serta menghapus akun yang tidak aktif atau melanggar ketentuan.
+* **Kelola Transaksi Pemesanan:**
+  * Memproses status pembayaran dan pengiriman secara bertahap (Menunggu Konfirmasi ➡️ Diproses ➡️ Dikirim ➡️ Selesai).
+  * Membatalkan pesanan pelanggan dengan sistem pengembalian stok yang cerdas.
+* **Sistem Laporan:** Menghasilkan laporan transaksi pemesanan untuk evaluasi performa bisnis.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## 🛠️ Stack Teknologi
+* **Framework Backend:** Laravel (PHP)
+* **Frontend:** Blade Templating, Tailwind CSS, Alpine.js (untuk interaksi dinamis & modal pop-up)
+* **Database:** MySQL
+* **Build Tool:** Vite
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 📦 Panduan Instalasi Lokal
 
-## Agentic Development
+Ikuti langkah-langkah berikut untuk menjalankan proyek ini di komputer lokal Anda:
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### Prasyarat
+* PHP >= 8.2
+* Composer
+* Node.js & NPM
+* Laragon, XAMPP, atau server lokal sejenis
 
-```bash
-composer require laravel/boost --dev
+### Langkah-Langkah
 
-php artisan boost:install
-```
+1. **Clone Repositori**
+   ```bash
+   git clone https://github.com/banuin/WEB-PPL-Selada.git
+   cd WEB-PPL-Selada
+   ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+2. **Instal Dependensi PHP (Composer)**
+   ```bash
+   composer install
+   ```
 
-## Contributing
+3. **Instal Dependensi Frontend (NPM)**
+   ```bash
+   npm install
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. **Konfigurasi Environment**
+   Salin file `.env.example` menjadi `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+   Buka file `.env` lalu sesuaikan konfigurasi database Anda:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=nama_database_anda
+   DB_USERNAME=root
+   DB_PASSWORD=
+   ```
 
-## Code of Conduct
+5. **Generate Application Key**
+   ```bash
+   php artisan key:generate
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6. **Migrasi Database & Seeding (Opsional)**
+   Jalankan migrasi untuk membuat tabel-tabel di database:
+   ```bash
+   php artisan migrate
+   ```
 
-## Security Vulnerabilities
+7. **Hubungkan Storage Link**
+   Untuk menampilkan gambar katalog produk atau bukti pembayaran:
+   ```bash
+   php artisan storage:link
+   ```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+8. **Jalankan Aplikasi**
+   Jalankan server Laravel:
+   ```bash
+   php artisan serve
+   ```
+   Di terminal baru, jalankan Vite untuk aset frontend:
+   ```bash
+   npm run dev
+   ```
+   Buka browser dan akses alamat `http://127.0.0.1:8000`.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 🛡️ Alur Pembatalan & Pengembalian Stok
+Sistem ini mengimplementasikan aturan bisnis yang ketat dalam pembatalan pesanan untuk menjaga kesegaran selada hidroponik:
+* **Pengembalian Stok Otomatis:** Jika pesanan dibatalkan saat status masih **Menunggu Verifikasi** atau **Menunggu Konfirmasi**, stok akan dikembalikan secara utuh ke katalog dengan perhitungan berat paket yang dipesan.
+* **Kebijakan Pembatalan setelah "Dikirim":** Apabila pesanan dibatalkan oleh Admin setelah produk masuk status **Dikirim**, sistem **tidak akan** mengembalikan stok ke katalog. Hal ini dilakukan karena selada yang telah dikirim rawan layu/busuk di perjalanan sehingga tidak dapat dimasukkan kembali ke stok siap jual.
