@@ -1,4 +1,4 @@
-# Banu In Selada - Sistem Pemesanan Selada Hidroponik 🥬
+# SELADAKU - Sistem Pemesanan Selada Hidroponik 🥬
 
 Sistem Informasi Pemesanan Selada Hidroponik berbasis Web yang dirancang khusus untuk mempermudah pelanggan dalam memesan selada segar dan membantu admin dalam mengelola katalog produk, konten edukasi (artikel), data pelanggan, serta pemrosesan transaksi pemesanan secara efisien.
 
