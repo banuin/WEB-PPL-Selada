@@ -97,7 +97,9 @@ Route::middleware('auth')->group(function () {
         
         // Menampilkan Daftar Pemesanan (Aktif)
         Route::get('/pemesanan', [PemesananController::class, 'indexPelanggan'])->name('pemesanan.index');
-        // Menampilkan Riwayat Pemesanan (Selesai)
+        // Menampilkan Riwayat Pemesanan (Selesai dan Dibatalkan)
         Route::get('/pemesanan/riwayat/selesai', [PemesananController::class, 'riwayatPelanggan'])->name('pemesanan.riwayat');
+        // Membatalkan pesanan
+        Route::post('/pemesanan/batalkan/{id}', [PemesananController::class, 'batalkanPesanan'])->name('pemesanan.batalkan');
     });
 });

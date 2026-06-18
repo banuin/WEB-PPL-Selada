@@ -41,7 +41,22 @@
                             <td class="py-5 px-6 text-gray-800">{{ $item->pelanggan->name }}</td>
                             <td class="py-5 px-6 text-gray-800">{{ $item->pelanggan->nomor_telpon }}</td>
                             <td class="py-5 px-6 text-center">
-                                <span class="inline-block px-5 py-1.5 border border-green-300 text-green-700 bg-green-50 rounded-full text-[13px] font-semibold">
+                                @php
+                                    if(strtolower($item->status_pembayaran) == 'dikirim') {
+                                        $statusClass = 'bg-blue-100 text-blue-700 border-blue-300';
+                                    } elseif(strtolower($item->status_pembayaran) == 'diproses') {
+                                        $statusClass = 'bg-orange-100 text-orange-600 border-orange-300';
+                                    } elseif(strtolower($item->status_pembayaran) == 'dibatalkan') {
+                                        $statusClass = 'bg-red-100 text-red-700 border-red-300';
+                                    } elseif(strtolower($item->status_pembayaran) == 'menunggu konfirmasi' || strtolower($item->status_pembayaran) == 'menunggu verifikasi') {
+                                        $statusClass = 'bg-yellow-100 text-yellow-700 border-yellow-300';
+                                    } elseif(strtolower($item->status_pembayaran) == 'selesai') {
+                                        $statusClass = 'bg-green-100 text-green-700 border-green-300';
+                                    } else {
+                                        $statusClass = 'bg-gray-100 text-gray-700 border-gray-300';
+                                    }
+                                @endphp
+                                <span class="inline-block px-5 py-1.5 border {{ $statusClass }} rounded-full text-[13px] font-semibold">
                                     {{ $item->status_pembayaran }}
                                 </span>
                             </td>
@@ -53,7 +68,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="py-10 text-center text-gray-400 italic">Belum ada riwayat pemesanan yang selesai.</td>
+                            <td colspan="5" class="py-10 text-center text-gray-400 italic">Belum ada riwayat pemesanan yang selesai atau dibatalkan.</td>
                         </tr>
                         @endforelse
                     </tbody>

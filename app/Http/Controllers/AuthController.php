@@ -28,15 +28,31 @@ class AuthController extends Controller
                     ->orWhere('username', $username)
                     ->first();
 
-        if ($user && $user->password === $password) {
-            // Login user menggunakan sistem bawaan Laravel
-            Auth::login($user);
-            $request->session()->regenerate();
-
-            if ($user->role == 'admin') {
-                return redirect()->route('admin.dashboard')->with('success', 'Login berhasil');
+        if ($user) {
+            $authenticated = false;
+            // Pengecekan aman untuk password yang sudah di-hash (Bcrypt)
+            if (str_starts_with($user->password, '$2y$')) {
+                $authenticated = Hash::check($password, $user->password);
             } else {
-                return redirect()->route('pelanggan.home')->with('success', 'Login berhasil');
+                // Pencocokan teks biasa (plaintext) sebagai cadangan untuk data uji coba lama
+                $authenticated = ($user->password === $password);
+                if ($authenticated) {
+                    // Otomatis konversi ke hash untuk keamanan
+                    $user->password = Hash::make($password);
+                    $user->save();
+                }
+            }
+
+            if ($authenticated) {
+                // Login user menggunakan sistem bawaan Laravel
+                Auth::login($user);
+                $request->session()->regenerate();
+
+                if ($user->role == 'admin') {
+                    return redirect()->route('admin.dashboard')->with('success', 'Login berhasil');
+                } else {
+                    return redirect()->route('pelanggan.home')->with('success', 'Login berhasil');
+                }
             }
         }
 
@@ -106,26 +122,40 @@ class AuthController extends Controller
 
     public function registerProses(Request $request)
     {
+        $kecamatans = [
+            'Ajung', 'Ambulu', 'Arjasa', 'Balung', 'Bangsalsari', 'Gumukmas', 'Jelbuk', 'Jenggawah',
+            'Jombang', 'Kalisat', 'Kaliwates', 'Kencong', 'Ledokombo', 'Mayang', 'Mumbulsari', 'Pakusari',
+            'Panti', 'Patrang', 'Puger', 'Rambipuji', 'Semboro', 'Silo', 'Sukorambi', 'Sukowono',
+            'Sumberbaru', 'Sumberjambe', 'Sumbersari', 'Tanggul', 'Tempurejo', 'Umbulsari', 'Wuluhan'
+        ];
+
         $request->validate([
             'name' => 'required',
             'username' => 'required|unique:users,username',
-            'alamat' => 'required',
+            'kecamatan' => 'required|in:' . implode(',', $kecamatans),
+            'detail_alamat' => 'required',
             'nomor_telpon' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:3',
         ], [
             'name.required' => 'Mohon lengkapi data anda',
             'username.required' => 'Mohon lengkapi data anda',
-            'alamat.required' => 'Mohon lengkapi data anda',
+            'kecamatan.required' => 'Mohon pilih kecamatan Anda',
+            'kecamatan.in' => 'Kecamatan harus berada di wilayah Kabupaten Jember',
+            'detail_alamat.required' => 'Mohon lengkapi detail alamat Anda',
             'nomor_telpon.required' => 'Mohon lengkapi data anda',
             'email.required' => 'Mohon lengkapi data anda',
             'password.required' => 'Mohon lengkapi data anda',
         ]);
 
+        $alamat_gabungan = $request->detail_alamat . ', Kec. ' . $request->kecamatan;
+
         User::create([
             'name' => $request->name,
             'username' => $request->username,
-            'alamat' => $request->alamat,
+            'kecamatan' => $request->kecamatan,
+            'detail_alamat' => $request->detail_alamat,
+            'alamat' => $alamat_gabungan,
             'nomor_telpon' => $request->nomor_telpon,
             'email' => $request->email,
             'password' => Hash::make($request->password), 
@@ -146,12 +176,15 @@ class AuthController extends Controller
         }
     }
 
-public function updateProfil(Request $request)
+    public function updateProfil(Request $request)
     {
         $user = Auth::user();
 
         $messages = [
             'required' => 'Harap lengkapi profil anda',
+            'kecamatan.required' => 'Mohon pilih kecamatan Anda',
+            'kecamatan.in' => 'Kecamatan harus berada di wilayah Kabupaten Jember',
+            'detail_alamat.required' => 'Mohon lengkapi detail alamat Anda',
         ];
 
         $rules = [
@@ -162,7 +195,14 @@ public function updateProfil(Request $request)
         ];
 
         if ($user->role != 'admin') {
-            $rules['alamat'] = 'required';
+            $kecamatans = [
+                'Ajung', 'Ambulu', 'Arjasa', 'Balung', 'Bangsalsari', 'Gumukmas', 'Jelbuk', 'Jenggawah',
+                'Jombang', 'Kalisat', 'Kaliwates', 'Kencong', 'Ledokombo', 'Mayang', 'Mumbulsari', 'Pakusari',
+                'Panti', 'Patrang', 'Puger', 'Rambipuji', 'Semboro', 'Silo', 'Sukorambi', 'Sukowono',
+                'Sumberbaru', 'Sumberjambe', 'Sumbersari', 'Tanggul', 'Tempurejo', 'Umbulsari', 'Wuluhan'
+            ];
+            $rules['kecamatan'] = 'required|in:' . implode(',', $kecamatans);
+            $rules['detail_alamat'] = 'required';
         }
 
         $request->validate($rules, $messages);
@@ -175,7 +215,9 @@ public function updateProfil(Request $request)
         ];
 
         if ($user->role != 'admin') {
-            $dataUpdate['alamat'] = $request->alamat;
+            $dataUpdate['kecamatan'] = $request->kecamatan;
+            $dataUpdate['detail_alamat'] = $request->detail_alamat;
+            $dataUpdate['alamat'] = $request->detail_alamat . ', Kec. ' . $request->kecamatan;
         }
 
         $user->update($dataUpdate);

@@ -50,12 +50,34 @@
                     </div>
 
                     <div>
-                        <label class="block text-lg font-bold text-black mb-2">Alamat</label>
-                        <input type="text" name="alamat" :readonly="!editMode" value="{{ old('alamat', $user->alamat) }}"
+                        <label class="block text-lg font-bold text-black mb-2">Kecamatan (Kab. Jember)</label>
+                        <select name="kecamatan" :disabled="!editMode"
+                            class="w-full h-14 rounded-[20px] px-6 font-semibold transition-all focus:outline-none border-gray-200 shadow-sm outline-none cursor-pointer
+                            {{ $errors->has('kecamatan') ? 'border-2 border-red-500 bg-white' : '' }}
+                            @if(!$errors->has('kecamatan')) :class="editMode ? 'bg-white border-2 border-green-600' : 'bg-[#E5E7EB] border-transparent text-gray-800'" @endif">
+                            <option value="" class="text-gray-400">Pilih Kecamatan</option>
+                            @php
+                                $kecamatans = [
+                                    'Ajung', 'Ambulu', 'Arjasa', 'Balung', 'Bangsalsari', 'Gumukmas', 'Jelbuk', 'Jenggawah',
+                                    'Jombang', 'Kalisat', 'Kaliwates', 'Kencong', 'Ledokombo', 'Mayang', 'Mumbulsari', 'Pakusari',
+                                    'Panti', 'Patrang', 'Puger', 'Rambipuji', 'Semboro', 'Silo', 'Sukorambi', 'Sukowono',
+                                    'Sumberbaru', 'Sumberjambe', 'Sumbersari', 'Tanggul', 'Tempurejo', 'Umbulsari', 'Wuluhan'
+                                ];
+                            @endphp
+                            @foreach($kecamatans as $kec)
+                                <option value="{{ $kec }}" {{ old('kecamatan', $user->kecamatan) == $kec ? 'selected' : '' }}>{{ $kec }}</option>
+                            @endforeach
+                        </select>
+                        @error('kecamatan') <span class="text-red-500 text-xs mt-2 block font-bold">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-lg font-bold text-black mb-2">Detail Alamat</label>
+                        <input type="text" name="detail_alamat" :readonly="!editMode" value="{{ old('detail_alamat', $user->detail_alamat) }}"
                             class="w-full h-14 rounded-[20px] px-6 font-semibold transition-all focus:outline-none border-gray-200 shadow-sm
-                            {{ $errors->has('alamat') ? 'border-2 border-red-500 bg-white' : '' }}
-                            @if(!$errors->has('alamat')) :class="editMode ? 'bg-white border-2 border-green-600' : 'bg-[#E5E7EB] border-transparent text-gray-800'" @endif">
-                        @error('alamat') <span class="text-red-500 text-xs mt-2 block font-bold">{{ $message }}</span> @enderror
+                            {{ $errors->has('detail_alamat') ? 'border-2 border-red-500 bg-white' : '' }}
+                            @if(!$errors->has('detail_alamat')) :class="editMode ? 'bg-white border-2 border-green-600' : 'bg-[#E5E7EB] border-transparent text-gray-800'" @endif">
+                        @error('detail_alamat') <span class="text-red-500 text-xs mt-2 block font-bold">{{ $message }}</span> @enderror
                     </div>
 
                     <div>

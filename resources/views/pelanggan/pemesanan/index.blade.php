@@ -45,7 +45,7 @@
                                     } elseif(strtolower($item->status_pembayaran) == 'diproses') {
                                         $statusClass = 'bg-orange-100 text-orange-600 border-orange-300';
                                     } elseif(strtolower($item->status_pembayaran) == 'menunggu konfirmasi' || strtolower($item->status_pembayaran) == 'menunggu verifikasi') {
-                                        $statusClass = 'bg-red-100 text-red-600 border-red-300';
+                                        $statusClass = 'bg-yellow-100 text-yellow-700 border-yellow-300';
                                     }
                                 @endphp
                                 <span class="px-4 py-1.5 rounded-full border text-xs font-medium {{ $statusClass }}">

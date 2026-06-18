@@ -68,24 +68,24 @@ class PemesananController extends Controller
         return redirect()->route('pelanggan.pemesanan.show', $pemesanan->id)->with('success_payment', true);
     }
 
-    // Menampilkan pesanan aktif (Selain "Selesai")
+    // Menampilkan pesanan aktif (Selain "Selesai" dan "Dibatalkan")
     public function indexPelanggan()
     {
         $pemesanans = Pemesanan::with('pelanggan')
             ->where('id_pelanggan', Auth::id())
-            ->where('status_pembayaran', '!=', 'Selesai')
+            ->whereNotIn('status_pembayaran', ['Selesai', 'Dibatalkan'])
             ->orderBy('created_at', 'desc')
             ->get();
 
         return view('pelanggan.pemesanan.index', compact('pemesanans'));
     }
 
-    // Menampilkan riwayat pesanan (Hanya "Selesai")
+    // Menampilkan riwayat pesanan (Hanya "Selesai" dan "Dibatalkan")
     public function riwayatPelanggan()
     {
         $pemesanans = Pemesanan::with('pelanggan')
             ->where('id_pelanggan', Auth::id())
-            ->where('status_pembayaran', 'Selesai')
+            ->whereIn('status_pembayaran', ['Selesai', 'Dibatalkan'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -98,5 +98,40 @@ class PemesananController extends Controller
         $pemesanan = Pemesanan::with(['detailPemesanan.katalog', 'pelanggan'])->findOrFail($id);
         
         return view('pelanggan.pemesanan.detail', compact('pemesanan'));
+    }
+
+    // Membatalkan Pesanan (Oleh Pelanggan)
+    public function batalkanPesanan(Request $request, $id)
+    {
+        $pemesanan = Pemesanan::with('detailPemesanan.katalog')->where('id_pelanggan', Auth::id())->findOrFail($id);
+        
+        $statusSekarang = strtolower($pemesanan->status_pembayaran);
+
+        // Hanya bisa dibatalkan jika status masih menunggu konfirmasi / verifikasi
+        if (in_array($statusSekarang, ['diproses', 'dikirim', 'selesai', 'dibatalkan'])) {
+            return back()->with('error', 'Pesanan tidak dapat dibatalkan karena sedang diproses atau telah selesai.');
+        }
+
+        // Kembalikan stok
+        foreach ($pemesanan->detailPemesanan as $detail) {
+            $katalog = $detail->katalog;
+            if ($katalog) {
+                // Kalkulasi ulang berat: harga_saat_pesan = harga dasar x berat.
+                // Jumlah total bungkus adalah: jumlah.
+                // Stok yang harus dikembalikan adalah (harga_saat_pesan / harga dasar) * jumlah.
+                if ($katalog->harga > 0) {
+                    $berat = $detail->harga_saat_pesan / $katalog->harga;
+                    $stokKembali = $detail->jumlah * $berat;
+                    $katalog->increment('stok', $stokKembali);
+                }
+            }
+        }
+
+        // Update status menjadi Dibatalkan
+        $pemesanan->update([
+            'status_pembayaran' => 'Dibatalkan'
+        ]);
+
+        return redirect()->route('pelanggan.pemesanan.riwayat')->with('success', 'Pesanan berhasil dibatalkan.');
     }
 }

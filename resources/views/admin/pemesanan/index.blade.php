@@ -50,9 +50,9 @@
                                     if(strtolower($item->status_pembayaran) == 'dikirim') {
                                         $statusClass = 'bg-blue-100 text-blue-700 border-blue-300';
                                     } elseif(strtolower($item->status_pembayaran) == 'diproses') {
-                                        $statusClass = 'bg-orange-100 text-orange-600 border-orange-300 bg-orange-50/50';
+                                        $statusClass = 'bg-orange-100 text-orange-600 border-orange-300';
                                     } elseif(strtolower($item->status_pembayaran) == 'menunggu konfirmasi' || strtolower($item->status_pembayaran) == 'menunggu verifikasi') {
-                                        $statusClass = 'bg-red-100 text-red-600 border-red-300';
+                                        $statusClass = 'bg-yellow-100 text-yellow-700 border-yellow-300';
                                     }
                                 @endphp
                                 <div class="flex justify-center items-center w-full">

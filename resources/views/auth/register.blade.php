@@ -76,12 +76,36 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-white mb-2">Alamat</label>
-                    <input type="text" name="alamat" value="{{ old('alamat') }}"
-                        class="w-full px-4 py-2.5 bg-transparent border rounded-xl text-white
-                        {{ $errors->has('alamat') ? 'border-red-500' : 'border-white' }}">
+                    <label class="block text-sm font-medium text-white mb-2">Kecamatan (Kab. Jember)</label>
+                    <select name="kecamatan"
+                        class="w-full px-4 py-2.5 bg-transparent border rounded-xl text-white outline-none
+                        {{ $errors->has('kecamatan') ? 'border-red-500 font-bold bg-[#E5E7EB]' : 'border-white' }} [&>option]:text-black cursor-pointer">
+                        <option value="" class="text-gray-400">Pilih Kecamatan</option>
+                        @php
+                            $kecamatans = [
+                                'Ajung', 'Ambulu', 'Arjasa', 'Balung', 'Bangsalsari', 'Gumukmas', 'Jelbuk', 'Jenggawah',
+                                'Jombang', 'Kalisat', 'Kaliwates', 'Kencong', 'Ledokombo', 'Mayang', 'Mumbulsari', 'Pakusari',
+                                'Panti', 'Patrang', 'Puger', 'Rambipuji', 'Semboro', 'Silo', 'Sukorambi', 'Sukowono',
+                                'Sumberbaru', 'Sumberjambe', 'Sumbersari', 'Tanggul', 'Tempurejo', 'Umbulsari', 'Wuluhan'
+                            ];
+                        @endphp
+                        @foreach($kecamatans as $kec)
+                            <option value="{{ $kec }}" {{ old('kecamatan') == $kec ? 'selected' : '' }}>{{ $kec }}</option>
+                        @endforeach
+                    </select>
 
-                    @error('alamat')
+                    @error('kecamatan')
+                        <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-white mb-2">Detail Alamat</label>
+                    <input type="text" name="detail_alamat" value="{{ old('detail_alamat') }}" placeholder="Contoh: Jl. Mawar No. 12 RT 01 RW 03"
+                        class="w-full px-4 py-2.5 bg-transparent border rounded-xl text-white placeholder-gray-300/60
+                        {{ $errors->has('detail_alamat') ? 'border-red-500' : 'border-white' }}">
+
+                    @error('detail_alamat')
                         <p class="text-red-400 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>

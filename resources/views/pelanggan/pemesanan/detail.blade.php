@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div x-data="{ showSuccess: {{ session('success_payment') ? 'true' : 'false' }} }" class="max-w-5xl mx-auto px-4 py-8">
+    <div x-data="{ showSuccess: {{ session('success_payment') ? 'true' : 'false' }}, showCancelModal: false }" class="max-w-5xl mx-auto px-4 py-8">
 
         <div class="flex items-center mb-6">
             <a href="{{ route('pelanggan.pemesanan.index') }}" class="text-gray-600 hover:text-gray-900 mr-4 transition">
@@ -19,6 +19,12 @@
             <p class="text-sm text-gray-700 mb-1">{{ $pemesanan->pelanggan->nomor_telpon }}</p>
             <p class="text-sm text-gray-700">{{ $pemesanan->pelanggan->alamat }}</p>
         </div>
+
+        @if(session('error'))
+        <div class="mb-6 bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded-xl relative text-sm font-medium">
+            {{ session('error') }}
+        </div>
+        @endif
 
         <div class="flex flex-col md:flex-row gap-6 relative">
             @php
@@ -80,10 +86,33 @@
                         
                         <div class="flex items-center pt-2 border-t border-gray-100">
                             <div class="w-1/2 text-sm text-gray-700">Status Pesanan</div>
-                            <div class="w-1/2 flex justify-end">
-                                <span class="bg-red-200 text-red-700 border border-red-300 px-5 py-2 rounded-full text-xs font-semibold tracking-wide">
+                            <div class="w-1/2 flex justify-end gap-2 items-center">
+                                @php
+                                    $isCancellable = !in_array(strtolower($pemesanan->status_pembayaran), ['diproses', 'dikirim', 'selesai', 'dibatalkan']);
+                                    $statusClass = 'bg-gray-200 text-gray-700 border-gray-300';
+                                    if(strtolower($pemesanan->status_pembayaran) == 'dibatalkan') {
+                                        $statusClass = 'bg-red-200 text-red-700 border-red-300';
+                                    } elseif(strtolower($pemesanan->status_pembayaran) == 'selesai') {
+                                        $statusClass = 'bg-green-200 text-green-700 border-green-300';
+                                    } elseif(strtolower($pemesanan->status_pembayaran) == 'dikirim') {
+                                        $statusClass = 'bg-blue-200 text-blue-700 border-blue-300';
+                                    } elseif(strtolower($pemesanan->status_pembayaran) == 'diproses') {
+                                        $statusClass = 'bg-orange-200 text-orange-700 border-orange-300';
+                                    } else {
+                                        $statusClass = 'bg-yellow-200 text-yellow-700 border-yellow-300';
+                                    }
+                                @endphp
+                                <span class="{{ $statusClass }} border px-5 py-2 rounded-full text-xs font-semibold tracking-wide">
                                     {{ $pemesanan->status_pembayaran }}
                                 </span>
+                                @if($isCancellable)
+                                    <form id="form-batalkan-pelanggan" action="{{ route('pelanggan.pemesanan.batalkan', $pemesanan->id) }}" method="POST" class="hidden">
+                                        @csrf
+                                    </form>
+                                    <button type="button" @click="showCancelModal = true" class="bg-red-600 hover:bg-red-700 text-white border border-red-700 px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition shadow-sm whitespace-nowrap">
+                                        Batalkan Pesanan
+                                    </button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -111,6 +140,28 @@
             <div class="bg-[#16A34A] text-white font-bold py-3.5 px-8 rounded-full shadow-2xl text-lg tracking-wide flex items-center gap-3 pointer-events-auto">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 Pembayaran Berhasil
+            </div>
+        </div>
+
+        <!-- Cancel Modal -->
+        <div x-show="showCancelModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center">
+            <div class="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" @click="showCancelModal = false"></div>
+            <div class="bg-white rounded-2xl shadow-2xl z-10 w-full max-w-sm mx-4 overflow-hidden transform transition-all" x-transition.scale.origin.center>
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Batalkan Pesanan?</h3>
+                    <p class="text-sm text-gray-500">Apakah Anda yakin ingin membatalkan pesanan ini? Tindakan ini tidak dapat dibatalkan.</p>
+                </div>
+                <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+                    <button type="button" @click="showCancelModal = false" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-50 transition">
+                        Kembali
+                    </button>
+                    <button type="button" onclick="document.getElementById('form-batalkan-pelanggan').submit()" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition">
+                        Ya, Batalkan
+                    </button>
+                </div>
             </div>
         </div>
     </div>

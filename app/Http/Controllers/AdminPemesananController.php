@@ -11,7 +11,7 @@ class AdminPemesananController extends Controller
     public function index()
     {
         $pemesanans = Pemesanan::with('pelanggan')
-            ->where('status_pembayaran', '!=', 'Selesai')
+            ->whereNotIn('status_pembayaran', ['Selesai', 'Dibatalkan'])
             ->orderBy('created_at', 'desc')
             ->get();
             
@@ -22,7 +22,7 @@ class AdminPemesananController extends Controller
     public function riwayat()
     {
         $pemesanans = Pemesanan::with('pelanggan')
-            ->where('status_pembayaran', 'Selesai')
+            ->whereIn('status_pembayaran', ['Selesai', 'Dibatalkan'])
             ->orderBy('created_at', 'desc')
             ->get();
             
@@ -40,11 +40,29 @@ class AdminPemesananController extends Controller
     // 4. Memproses Perubahan Status oleh Admin
     public function updateStatus(Request $request, $id)
     {
-        $pemesanan = Pemesanan::findOrFail($id);
+        $pemesanan = Pemesanan::with('detailPemesanan.katalog')->findOrFail($id);
+        $statusLama = $pemesanan->status_pembayaran;
+        $statusBaru = $request->status;
+
+        // Jika dibatalkan oleh admin, dan status sebelumnya bukan dibatalkan, maka kembalikan stok
+        // LOGIKA BARU: Jika status sebelumnya sudah 'Dikirim', jangan kembalikan stok karena selada mungkin sudah busuk.
+        if ($statusBaru == 'Dibatalkan' && $statusLama != 'Dibatalkan') {
+            if ($statusLama != 'Dikirim') {
+                foreach ($pemesanan->detailPemesanan as $detail) {
+                    $katalog = $detail->katalog;
+                    if ($katalog && $katalog->harga > 0) {
+                        $berat = $detail->harga_saat_pesan / $katalog->harga;
+                        $stokKembali = $detail->jumlah * $berat;
+                        $katalog->increment('stok', $stokKembali);
+                    }
+                }
+            }
+        }
+
         $pemesanan->update([
-            'status_pembayaran' => $request->status
+            'status_pembayaran' => $statusBaru
         ]);
 
-        return back()->with('success', 'Status pesanan berhasil diperbarui menjadi: ' . $request->status);
+        return back()->with('success', 'Status pesanan berhasil diperbarui menjadi: ' . $statusBaru);
     }
 }

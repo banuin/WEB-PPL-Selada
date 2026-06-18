@@ -14,6 +14,8 @@ class User extends Authenticatable
         'name',
         'username',
         'alamat',
+        'kecamatan',
+        'detail_alamat',
         'nomor_telpon',
         'email',
         'password',

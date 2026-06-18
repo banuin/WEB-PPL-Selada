@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div x-data="{ showReceipt: false }" class="max-w-6xl mx-auto px-4 py-8">
+    <div x-data="{ showReceipt: false, showCancelModal: false, showDropdownModal: false, previousStatus: '{{ $pemesanan->status_pembayaran }}' }" class="max-w-6xl mx-auto px-4 py-8">
         
         <div class="flex items-center mb-6">
             <a href="{{ route('admin.pemesanan.index') }}" class="text-gray-600 hover:text-gray-900 mr-4 transition">
@@ -88,8 +88,15 @@
                         <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                             <div class="text-sm text-gray-700">Status Pemesanan</div>
                             
-                            <div class="flex-1 flex justify-end">
+                            <div class="flex-1 flex justify-end gap-2 items-center">
                                 @if(strtolower($pemesanan->status_pembayaran) == 'menunggu verifikasi' || strtolower($pemesanan->status_pembayaran) == 'menunggu konfirmasi')
+                                    <form id="form-batalkan-admin" action="{{ route('admin.pemesanan.updateStatus', $pemesanan->id) }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="status" value="Dibatalkan">
+                                    </form>
+                                    <button type="button" @click="showCancelModal = true" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-lg text-sm transition shadow-sm">
+                                        Batalkan
+                                    </button>
                                     <form action="{{ route('admin.pemesanan.updateStatus', $pemesanan->id) }}" method="POST">
                                         @csrf
                                         <input type="hidden" name="status" value="Diproses">
@@ -101,16 +108,22 @@
                                     <span class="inline-block bg-green-100 text-green-700 border border-green-200 px-6 py-2 rounded-full text-xs font-bold tracking-wide shadow-sm">
                                         Selesai
                                     </span>
+                                @elseif(strtolower($pemesanan->status_pembayaran) == 'dibatalkan')
+                                    <span class="inline-block bg-red-100 text-red-700 border border-red-200 px-6 py-2 rounded-full text-xs font-bold tracking-wide shadow-sm">
+                                        Dibatalkan
+                                    </span>
                                 @else
-                                    <form action="{{ route('admin.pemesanan.updateStatus', $pemesanan->id) }}" method="POST">
+                                    <form id="form-status-dropdown" action="{{ route('admin.pemesanan.updateStatus', $pemesanan->id) }}" method="POST">
                                         @csrf
                                         <select name="status" 
                                                 required 
-                                                onchange="this.form.submit()" 
+                                                x-ref="statusSelect"
+                                                @change="if($event.target.value === 'Dibatalkan') { showDropdownModal = true; } else { $event.target.form.submit(); }" 
                                                 class="bg-gray-50 border border-gray-300 text-sm rounded-lg focus:ring-[#2F8540] focus:border-[#2F8540] p-2.5 outline-none cursor-pointer font-medium text-gray-800 shadow-sm transition-all">
                                             <option value="Diproses" {{ $pemesanan->status_pembayaran == 'Diproses' ? 'selected' : '' }}>Diproses</option>
                                             <option value="Dikirim" {{ $pemesanan->status_pembayaran == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
                                             <option value="Selesai" {{ $pemesanan->status_pembayaran == 'Selesai' ? 'selected' : '' }}>Selesai</option>
+                                            <option value="Dibatalkan" {{ $pemesanan->status_pembayaran == 'Dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
                                         </select>
                                     </form>
                                 @endif
@@ -141,6 +154,51 @@
                 @endif
             </div>
 
+        </div>
+
+        <!-- Cancel Modal (Button) -->
+        <div x-show="showCancelModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center">
+            <div class="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" @click="showCancelModal = false"></div>
+            <div class="bg-white rounded-2xl shadow-2xl z-10 w-full max-w-sm mx-4 overflow-hidden transform transition-all" x-transition.scale.origin.center>
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Batalkan Pesanan?</h3>
+                    <p class="text-sm text-gray-500">Apakah Anda yakin ingin membatalkan pesanan ini? Stok akan dikembalikan otomatis.</p>
+                </div>
+                <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+                    <button type="button" @click="showCancelModal = false" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-50 transition">
+                        Kembali
+                    </button>
+                    <button type="button" onclick="document.getElementById('form-batalkan-admin').submit()" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition">
+                        Ya, Batalkan
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dropdown Cancel Modal -->
+        <div x-show="showDropdownModal" style="display: none;" class="fixed inset-0 z-50 flex items-center justify-center">
+            <div class="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" @click="showDropdownModal = false; $refs.statusSelect.value = previousStatus;"></div>
+            <div class="bg-white rounded-2xl shadow-2xl z-10 w-full max-w-sm mx-4 overflow-hidden transform transition-all" x-transition.scale.origin.center>
+                <div class="p-6 text-center">
+                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-900 mb-2">Batalkan Pesanan?</h3>
+                    <p class="text-sm text-gray-500 mb-2">Apakah Anda yakin membatalkan pesanan ini?</p>
+                    <p class="text-sm font-semibold text-red-600">Pastikan uang dikembalikan ke pelanggan!</p>
+                </div>
+                <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+                    <button type="button" @click="showDropdownModal = false; $refs.statusSelect.value = previousStatus;" class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg text-sm font-semibold hover:bg-gray-50 transition">
+                        Kembali
+                    </button>
+                    <button type="button" onclick="document.getElementById('form-status-dropdown').submit()" class="px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-semibold hover:bg-red-700 transition">
+                        Ya, Batalkan
+                    </button>
+                </div>
+            </div>
         </div>
 
     </div>

@@ -13,6 +13,12 @@
 
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
             
+            @if(session('success'))
+            <div class="mb-4 p-4 bg-green-100 border border-green-300 text-green-700 rounded-xl font-medium text-sm">
+                {{ session('success') }}
+            </div>
+            @endif
+
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-xl font-bold text-gray-900">Daftar Pemesanan</h2>
             </div>
@@ -41,8 +47,12 @@
                                         $statusClass = 'bg-blue-100 text-blue-700 border-blue-300';
                                     } elseif(strtolower($item->status_pembayaran) == 'diproses') {
                                         $statusClass = 'bg-orange-100 text-orange-600 border-orange-300';
+                                    } elseif(strtolower($item->status_pembayaran) == 'dibatalkan') {
+                                        $statusClass = 'bg-red-100 text-red-700 border-red-300';
                                     } elseif(strtolower($item->status_pembayaran) == 'menunggu konfirmasi' || strtolower($item->status_pembayaran) == 'menunggu verifikasi') {
-                                        $statusClass = 'bg-red-100 text-red-600 border-red-300';
+                                        $statusClass = 'bg-yellow-100 text-yellow-700 border-yellow-300';
+                                    } elseif(strtolower($item->status_pembayaran) == 'selesai') {
+                                        $statusClass = 'bg-green-100 text-green-700 border-green-300';
                                     }
                                 @endphp
                                 <span class="px-4 py-1.5 rounded-full border text-xs font-medium {{ $statusClass }}">
@@ -57,7 +67,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5" class="py-10 text-center text-gray-400 italic">Belum ada Riwayat Pemesanan yang selesai.</td>
+                            <td colspan="5" class="py-10 text-center text-gray-400 italic">Belum ada Riwayat Pemesanan yang selesai atau dibatalkan.</td>
                         </tr>
                         @endforelse
                     </tbody>
