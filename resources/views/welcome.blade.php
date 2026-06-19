@@ -55,24 +55,31 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto w-full px-4">
             @forelse ($katalogs as $item)
-            <a href="{{ route('login') }}" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-md transition group text-left">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-md transition group text-left relative">
                 
-                <div class="w-full h-48 overflow-hidden rounded-xl mb-5">
+                <a href="{{ route('login') }}" class="w-full h-48 overflow-hidden rounded-xl mb-5 block">
                     @php
                         // Cek apakah foto berbentuk array/JSON atau string biasa
                         $foto = is_array($item->foto) ? $item->foto[0] : (json_decode($item->foto)[0] ?? $item->foto);
                     @endphp
                     <img src="{{ asset('storage/' . $foto) }}" alt="{{ $item->judul }}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                </a>
+
+                <a href="{{ route('login') }}" class="block">
+                    <h3 class="text-[15px] font-bold text-gray-800 leading-snug mb-2 pr-4 hover:text-[#2F8540] transition">
+                        {{ $item->judul }}
+                    </h3>
+                </a>
+
+                <div class="flex items-center justify-between mt-auto pt-2">
+                    <p class="text-[#2F8540] font-bold text-[15px]">
+                        Rp{{ number_format($item->harga, 0, ',', '.') }}
+                    </p>
+                    <a href="{{ route('login') }}" class="bg-[#2F8540] hover:bg-[#266d33] text-white text-xs font-bold py-2 px-4 rounded-lg transition shadow-sm whitespace-nowrap">
+                        Pesan
+                    </a>
                 </div>
-
-                <h3 class="text-[15px] font-bold text-gray-800 leading-snug mb-2 pr-4">
-                    {{ $item->judul }}
-                </h3>
-
-                <p class="text-[#2F8540] font-bold text-[15px] mt-auto">
-                    Rp{{ number_format($item->harga, 0, ',', '.') }}
-                </p>
-            </a>
+            </div>
             @empty
             <div class="col-span-full py-10 text-center">
                 <p class="text-gray-400 italic">Katalog belum tersedia.</p>

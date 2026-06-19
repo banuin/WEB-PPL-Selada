@@ -27,7 +27,7 @@
 }
 
 .nav-link:hover {
-    color: #15803d; 
+    color: #15803d;
 }
 
 .btn-primary {
@@ -46,7 +46,7 @@
 }
 
 .btn-primary:hover {
-    background-color: #166534; 
+    background-color: #166534;
 }
 
 .btn-outline {
@@ -104,7 +104,10 @@
 
 .hero-bg {
     position: absolute;
-    top: 0; right: 0; bottom: 0; left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     z-index: 0;
     background-color: #14532d;
 }
@@ -152,7 +155,7 @@
 
 .grid-container {
     display: grid;
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
     gap: 1.5rem;
 }
 
@@ -192,10 +195,10 @@
 
 @media (min-width: 768px) {
     .hero-title {
-        font-size: 2.25rem; 
+        font-size: 2.25rem;
     }
-    
+
     .grid-container {
-        grid-template-columns: repeat(3, 1fr); 
+        grid-template-columns: repeat(3, 1fr);
     }
 }

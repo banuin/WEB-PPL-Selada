@@ -79,27 +79,35 @@
         <!-- Tambahan max-w-5xl dan mx-auto biar sejajar persis dengan atasnya -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto w-full">
             
+            @php $katalogs = \App\Models\Katalog::latest()->get(); @endphp
             @forelse ($katalogs as $item)
-            <a href="{{ route('pelanggan.katalog.show', $item->id) }}" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-md transition group text-left">
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-md transition group text-left relative extra-katalog" {!! $loop->index >= 3 ? 'style="display: none;"' : '' !!}>
                 
                 <!-- Foto Katalog -->
-                <div class="w-full h-48 overflow-hidden rounded-xl mb-5">
+                <a href="{{ route('pelanggan.katalog.show', $item->id) }}" class="w-full h-48 overflow-hidden rounded-xl mb-5 block">
                     <img src="{{ asset('storage/' . $item->foto[0]) }}" 
                         alt="{{ $item->judul }}" 
                         class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
-                </div>
+                </a>
 
                 <!-- Info Katalog -->
-                <h3 class="text-[15px] font-bold text-gray-800 leading-snug mb-2 pr-4">
-                    {{ $item->judul }}<br>
-                    <!-- <span class="text-xs text-gray-500 font-medium">(minim {{ $item->berat }}Kg)</span> -->
-                </h3>
+                <a href="{{ route('pelanggan.katalog.show', $item->id) }}" class="block">
+                    <h3 class="text-[15px] font-bold text-gray-800 leading-snug mb-2 pr-4 hover:text-[#2F8540] transition">
+                        {{ $item->judul }}<br>
+                        <!-- <span class="text-xs text-gray-500 font-medium">(minim {{ $item->berat }}Kg)</span> -->
+                    </h3>
+                </a>
 
-                <!-- Harga -->
-                <p class="text-[#2F8540] font-bold text-[15px] mt-auto">
-                    Rp{{ number_format($item->harga, 0, ',', '.') }}
-                </p>
-            </a>
+                <!-- Harga & Tombol Pesan -->
+                <div class="flex items-center justify-between mt-auto pt-2">
+                    <p class="text-[#2F8540] font-bold text-[15px]">
+                        Rp{{ number_format($item->harga, 0, ',', '.') }}
+                    </p>
+                    <a href="{{ route('pelanggan.checkout', $item->id) }}" class="bg-[#2F8540] hover:bg-[#266d33] text-white text-xs font-bold py-2 px-4 rounded-lg transition shadow-sm whitespace-nowrap">
+                        Pesan
+                    </a>
+                </div>
+            </div>
             
             @empty
             <div class="col-span-full py-10 text-center">
@@ -108,6 +116,19 @@
             @endforelse
 
         </div>
+
+        @if($katalogs->count() > 3)
+        <div class="text-center mt-10" id="load-more-katalog-container">
+            <button onclick="showAllKatalog()" class="btn-outline">Lihat Lebih Banyak Lagi</button>
+        </div>
+        <script>
+            function showAllKatalog() {
+                const extras = document.querySelectorAll('.extra-katalog');
+                extras.forEach(el => el.style.display = 'flex');
+                document.getElementById('load-more-katalog-container').style.display = 'none';
+            }
+        </script>
+        @endif
 
     </div>
 

@@ -118,7 +118,7 @@
                     <div class="flex justify-end">
                         <button type="button" onclick="document.getElementById('modal-bayar').style.display='flex'"
                                 class="bg-[#16A34A] hover:bg-green-700 text-white font-bold py-3 px-10 rounded-xl transition-colors shadow-md text-sm">
-                            Pilih Pembayaran
+                            Bayar
                         </button>
                     </div>
                 </div>

@@ -109,9 +109,9 @@
                                     <form id="form-batalkan-pelanggan" action="{{ route('pelanggan.pemesanan.batalkan', $pemesanan->id) }}" method="POST" class="hidden">
                                         @csrf
                                     </form>
-                                    <button type="button" @click="showCancelModal = true" class="bg-red-600 hover:bg-red-700 text-white border border-red-700 px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition shadow-sm whitespace-nowrap">
+                                    <!-- <button type="button" @click="showCancelModal = true" class="bg-red-600 hover:bg-red-700 text-white border border-red-700 px-4 py-2 rounded-full text-xs font-semibold tracking-wide transition shadow-sm whitespace-nowrap">
                                         Batalkan Pesanan
-                                    </button>
+                                    </button> -->
                                 @endif
                             </div>
                         </div>
