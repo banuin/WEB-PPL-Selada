@@ -15,7 +15,14 @@
     @stack('styles')
 </head>
 
-<body class="bg-[#FAFAFA] font-sans antialiased text-gray-800 flex flex-col min-h-screen">
+<body class="bg-[#FAFAFA] font-sans antialiased text-gray-800 flex flex-col min-h-screen relative overflow-x-hidden">
+
+    <!-- Background Blobs -->
+    <div class="bg-blob-container">
+        <div class="bg-blob bg-blob-1"></div>
+        <div class="bg-blob bg-blob-2"></div>
+        <div class="bg-blob bg-blob-3"></div>
+    </div>
 
     @include('layouts.navbar')
 

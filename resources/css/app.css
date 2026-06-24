@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 
-@theme {
+:root {
     --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
@@ -200,5 +200,74 @@
 
     .grid-container {
         grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Animations */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+}
+
+.animate-on-scroll.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Background Blobs */
+.bg-blob-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index: -10;
+    pointer-events: none;
+}
+
+.bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.6;
+    animation: float 15s ease-in-out infinite;
+}
+
+.bg-blob-1 {
+    width: 40vw;
+    height: 40vw;
+    background-color: #dcfce7;
+    top: -10vw;
+    left: -10vw;
+}
+
+.bg-blob-2 {
+    width: 35vw;
+    height: 35vw;
+    background-color: #bbf7d0;
+    bottom: -10vw;
+    right: -10vw;
+    animation-delay: -7s;
+}
+
+.bg-blob-3 {
+    width: 25vw;
+    height: 25vw;
+    background-color: #86efac;
+    top: 40%;
+    left: 50%;
+    animation-delay: -3s;
+    opacity: 0.4;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+    }
+    50% {
+        transform: translateY(-20px) scale(1.05);
     }
 }

@@ -7,21 +7,34 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body class="bg-[#F8FAF5] min-h-screen font-sans relative">
+<body class="bg-[#F8FAF5] min-h-screen font-sans relative overflow-x-hidden">
+
+    <!-- Background Blobs -->
+    <div class="bg-blob-container">
+        <div class="bg-blob bg-blob-1"></div>
+        <div class="bg-blob bg-blob-2"></div>
+        <div class="bg-blob bg-blob-3"></div>
+    </div>
 
     {{-- Tombol Back --}}
-    <div class="px-10 pt-8 absolute top-0 left-0 z-10">
-        <a href="{{ route('admin.artikel.index') }}" class="text-gray-800 hover:text-black transition">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <div class="px-10 pt-8 absolute top-0 left-0 z-50 animate-on-scroll">
+        <a href="{{ route('admin.artikel.index') }}" class="text-gray-800 hover:text-[#2F8540] transition duration-300 flex items-center gap-2 font-semibold bg-white/70 backdrop-blur-md px-4 py-2 rounded-xl shadow-sm border border-gray-100/50 hover:shadow-md">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
             </svg>
+            Kembali
         </a>
     </div>
 
     {{-- Form Container --}}
-    <div class="w-full min-h-screen flex items-center justify-center p-6">
-        <div class="w-full max-w-4xl bg-white rounded-3xl shadow-md p-10 md:p-14 border border-gray-100">
+    <div class="w-full min-h-screen flex items-center justify-center p-6 relative z-10">
+        <div class="w-full max-w-4xl bg-white/80 backdrop-blur-xl rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-10 md:p-14 border border-white/50 animate-on-scroll">
             
+            <div class="mb-10 text-center">
+                <h1 class="text-3xl font-extrabold text-gray-800 mb-2">Buat Artikel Baru</h1>
+                <p class="text-gray-500 font-medium">Bagikan informasi menarik seputar selada.</p>
+            </div>
+
             <form action="{{ route('admin.artikel.store') }}" method="POST" enctype="multipart/form-data" x-data="{ fileName: '' }">
                 @csrf
                 

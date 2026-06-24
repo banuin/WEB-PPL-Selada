@@ -4,7 +4,7 @@
 
     <div class="max-w-7xl mx-auto px-6 py-10">
 
-        <div class="flex justify-between items-center mb-8">
+        <div class="flex justify-between items-center mb-8 animate-on-scroll">
             <a href="{{ route('admin.dashboard') }}" class="text-gray-600 hover:text-black transition flex items-center p-2 -ml-2">
                 <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
@@ -23,7 +23,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             @forelse ($katalogs as $item)
-            <a href="{{ route('admin.katalog.show', $item->id) }}" class="bg-white p-4 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col h-full hover:shadow-md transition group">
+            <a href="{{ route('admin.katalog.show', $item->id) }}" class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] border border-gray-100 flex flex-col h-full hover:shadow-lg transition-all group animate-on-scroll">
                 
                 <!-- Menampilkan foto pertama dari array -->
                 <div class="w-full h-48 overflow-hidden rounded-xl mb-5">
@@ -34,7 +34,7 @@
 
                 <h3 class="text-[15px] font-bold text-gray-800 leading-snug mb-2 pr-4">
                     {{ $item->judul }}<br>
-                    <span class="text-xs text-gray-500 font-medium">(minim {{ $item->berat }}Kg)</span>
+                    <!-- <span class="text-xs text-gray-500 font-medium">(minim {{ $item->berat }}Kg)</span> -->
                 </h3>
 
                 <p class="text-[#2F8540] font-bold text-[15px] mt-auto">

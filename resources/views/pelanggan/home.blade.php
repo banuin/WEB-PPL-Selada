@@ -5,7 +5,7 @@
     <div class="hero-wrapper">
         <div class="hero-container">
             <div class="hero-bg"><img src="{{ asset('images/kebun-selada.jpg') }}" alt="Kebun" class="hero-img"></div>
-            <div class="relative z-10 max-w-3xl">
+            <div class="relative z-10 max-w-3xl animate-on-scroll">
                 <h1 class="hero-title">Kenapa Selada Bisa Berwarna<br>Putih? Ini Penjelasannya!</h1>
                 <p class="text-white text-sm mb-12 opacity-90">Kenapa Selada Bisa Berwarna Putih? Ini Penjelasannya!</p>
                 <a href="#" class="btn-white">Selengkapnya</a>
@@ -14,7 +14,7 @@
     </div>
 
     <div id="artikel-section" class="section-wrapper">
-        <div class="section-header">
+        <div class="section-header animate-on-scroll">
             <h2 class="section-title">Artikel</h2>
             <div class="section-line"></div>
         </div>
@@ -25,18 +25,18 @@
 
             @if($articles->count() > 0)
                 @foreach($articles as $item)
-                <div class="card extra-article" {!! $loop->index >= 3 ? 'style="display: none;"' : '' !!}>
+                <div class="card extra-article animate-on-scroll bg-white/90 backdrop-blur-sm" {!! $loop->index >= 3 ? 'style="display: none;"' : '' !!}>
                     <img src="{{ asset('images/articles/'.$item->gambar) }}" alt="Gambar" class="card-img">
-                    <h3 class="text-sm font-bold text-center text-black mb-4 px-2">{{ $item->judul }}</h3>
-                    <a href="{{ route('artikel.show', $item->id) }}" 
-                    class="flex-full bg-[#2F8540] hover:bg-[#266d33] text-white font-semibold text-sm py-3 rounded-xl text-center transition shadow-sm block">
+                    <h3 class="flex-grow text-sm font-bold text-center text-black mb-4 px-2">{{ $item->judul }}</h3>
+                    <a href="{{ route('artikel.show', $item->id) }}"
+                    class="mt-auto bg-[#2F8540] hover:bg-[#266d33] text-white font-semibold text-sm py-3 rounded-xl text-center transition shadow-sm block">
                         Selengkapnya
                     </a>
                 </div>
                 @endforeach
             @else
                 @for ($i = 0; $i < 3; $i++)
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full hover:shadow-md transition">
+                <div class="bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col h-full hover:shadow-md transition animate-on-scroll">
                     <img src="{{ asset('images/menanam-selada.jpg') }}" alt="Petani" class="w-full h-48 object-cover">
                     
                     <div class="p-5 flex flex-col flex-grow">
@@ -70,7 +70,7 @@
     <div id="katalog-section" class="section-wrapper !mb-24">
         
         <!-- Header Katalog (Biar sama dengan Artikel) -->
-        <div class="section-header">
+        <div class="section-header animate-on-scroll">
             <h2 class="section-title">Katalog Terbaru</h2>
             <div class="section-line"></div>
         </div>
@@ -81,7 +81,7 @@
             
             @php $katalogs = \App\Models\Katalog::latest()->get(); @endphp
             @forelse ($katalogs as $item)
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-md transition group text-left relative extra-katalog" {!! $loop->index >= 3 ? 'style="display: none;"' : '' !!}>
+            <div class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-lg transition-all group text-left relative extra-katalog animate-on-scroll" {!! $loop->index >= 3 ? 'style="display: none;"' : '' !!}>
                 
                 <!-- Foto Katalog -->
                 <a href="{{ route('pelanggan.katalog.show', $item->id) }}" class="w-full h-48 overflow-hidden rounded-xl mb-5 block">
@@ -103,7 +103,7 @@
                     <p class="text-[#2F8540] font-bold text-[15px]">
                         Rp{{ number_format($item->harga, 0, ',', '.') }}
                     </p>
-                    <a href="{{ route('pelanggan.checkout', $item->id) }}" class="bg-[#2F8540] hover:bg-[#266d33] text-white text-xs font-bold py-2 px-4 rounded-lg transition shadow-sm whitespace-nowrap">
+                    <a href="{{ route('pelanggan.katalog.show', $item->id) }}" class="bg-[#2F8540] hover:bg-[#266d33] text-white text-xs font-bold py-2 px-4 rounded-lg transition shadow-sm whitespace-nowrap">
                         Pesan
                     </a>
                 </div>

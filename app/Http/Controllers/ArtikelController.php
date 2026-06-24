@@ -42,7 +42,7 @@ class ArtikelController extends Controller
             'gambar' => $imageName,           
         ]);
 
-        return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil dibuat!');
+        return redirect()->route('admin.artikel.index')->with('success', 'Artikel berhasil diunggah!');
     }
 
     public function show($id)

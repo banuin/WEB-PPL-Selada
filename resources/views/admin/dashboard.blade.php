@@ -7,7 +7,7 @@
             <div class="hero-bg">
                 <img src="{{ asset('images/kebun-selada.jpg') }}" alt="Kebun" class="hero-img">
             </div>
-            <div class="relative z-10 max-w-3xl">
+            <div class="relative z-10 max-w-3xl animate-on-scroll">
                 <span class="bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded mb-4 inline-block uppercase tracking-widest">Admin Mode</span>
                 <h1 class="hero-title">Kenapa Selada Bisa Berwarna<br>Putih? Ini Penjelasannya!</h1>
                 <p class="text-white text-sm font-medium mb-12 opacity-90">Mode Administrator: Kelola konten dan pantau pelanggan.</p>
@@ -17,7 +17,7 @@
     </div>
 
     <div class="section-wrapper !mb-24 margin-bottom: 80px;">
-        <div class="section-header">
+        <div class="section-header animate-on-scroll">
             <h2 class="section-title">Artikel</h2>
             <div class="section-line"></div>
         </div>
@@ -28,7 +28,7 @@
             @if($articles->count() > 0)
                 {{-- Tampilan jika SUDAH ADA data dari Admin --}}
                 @foreach($articles as $item)
-                <div class="card">
+                <div class="card animate-on-scroll bg-white/90 backdrop-blur-sm">
                     <img src="{{ asset('images/articles/'.$item->gambar) }}" alt="Gambar" class="card-img">
                     <h3 class="text-sm font-bold text-center text-black mb-4 px-2">{{ $item->judul }}</h3>
                     <a href="{{ route('artikel.show', $item->id) }}" 
@@ -40,7 +40,7 @@
             @else
                 {{-- Tampilan SEMENTARA (Placeholder) jika database masih kosong --}}
                 @for ($i = 0; $i < 6; $i++)
-                <div class="card">
+                <div class="card animate-on-scroll bg-white/90 backdrop-blur-sm">
                     <img src="{{ asset('images/menanam-selada.jpg') }}" alt="Petani" class="card-img">
                     <h3 class="text-sm font-bold text-center text-black mb-4 px-2 tracking-tight leading-snug">
                         Kenapa Selada Bisa Berwarna Putih? Ini Penjelasannya!   
@@ -56,7 +56,7 @@
     <div class="section-wrapper !mb-24">
         
         <!-- Header Katalog (Biar sama dengan Artikel) -->
-        <div class="section-header">
+        <div class="section-header animate-on-scroll">
             <h2 class="section-title">Katalog Terbaru</h2>
             <div class="section-line"></div>
         </div>
@@ -66,7 +66,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto w-full">
             
             @forelse ($katalogs as $item)
-            <a href="{{ route('admin.katalog.show', $item->id) }}" class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-md transition group text-left">
+            <a href="{{ route('admin.katalog.show', $item->id) }}" class="bg-white/90 backdrop-blur-sm p-4 rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full hover:shadow-lg transition-all group text-left animate-on-scroll">
                 
                 <!-- Foto Katalog -->
                 <div class="w-full h-48 overflow-hidden rounded-xl mb-5">
@@ -78,7 +78,7 @@
                 <!-- Info Katalog -->
                 <h3 class="text-[15px] font-bold text-gray-800 leading-snug mb-2 pr-4">
                     {{ $item->judul }}<br>
-                    <span class="text-xs text-gray-500 font-medium">(minim {{ $item->berat }}Kg)</span>
+                    <!-- <span class="text-xs text-gray-500 font-medium">({{ $item->berat }}Kg)</span> -->
                 </h3>
 
                 <!-- Harga -->
